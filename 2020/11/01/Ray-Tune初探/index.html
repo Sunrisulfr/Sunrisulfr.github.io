@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>&#39;Ray.Tune初探(一)：优雅的处理超参优化&#39; - Sunrisulfr的菠萝屋</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Sunrisulfr,"> 
+    <meta name="description" content="OVERVIEW RAY
+What is Ray?Ray 提供了一个简单的通用 API，用于构建分布式应用程序。
+Ray通过以下三步完成此任务：
+
+为构建和运行分布式应用程序提供简单的基元。
+使最终,"> 
+    <meta name="author" content="Sunrisulfr"> 
+    <link rel="alternative" href="atom.xml" title="Sunrisulfr的菠萝屋" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Sunrisulfr的菠萝屋</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://sunrifr.xyz"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">'Ray.Tune初探(一)：优雅的处理超参优化'</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">'Ray.Tune初探(一)：优雅的处理超参优化'</h1>
+        <div class="stuff">
+            <span>十一月 01, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Ray/" rel="tag">Ray</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Tune/" rel="tag">Tune</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E8%B6%85%E5%8F%82%E4%BC%98%E5%8C%96/" rel="tag">超参优化</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h1 id="OVERVIEW-RAY"><a href="#OVERVIEW-RAY" class="headerlink" title="OVERVIEW RAY"></a>OVERVIEW RAY</h1><p><img src="/.xyz//..%5Cimg%5Cray_header_logo.png" alt="Ray_head_logo"></p>
+<h2 id="What-is-Ray"><a href="#What-is-Ray" class="headerlink" title="What is Ray?"></a>What is Ray?</h2><p><strong>Ray 提供了一个简单的通用 API，用于构建分布式应用程序。</strong></p>
+<p>Ray通过以下三步完成此任务：</p>
+<ol>
+<li>为构建和运行分布式应用程序提供简单的基元。</li>
+<li>使最终用户能够并行化单个计算机代码，很少或零更改代码。</li>
+<li>在核心 Ray 上包括一个大型应用程序、库和工具生态系统，以启用复杂的应用程序。</li>
+</ol>
+<p><strong>Ray Core</strong>为应用程序构建提供了简单的基元。</p>
+<p>在**Ray Core **的顶部是解决机器学习中问题的几个库：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/index.html">Tune: Scalable Hyperparameter Tuning</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/rllib.html#rllib-index">RLlib: Scalable Reinforcement Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/raysgd/raysgd.html#sgd-index">RaySGD: Distributed Training Wrappers</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/serve/index.html#rayserve">Ray Serve: Scalable and Programmable Serving</a></li>
+</ul>
+<h2 id="A-Simple-example"><a href="#A-Simple-example" class="headerlink" title="A Simple example"></a>A Simple example</h2><p>Ray 提供 Python 和 Java API。Ray 使用Tasks（functions）和Actors（Classes）两种形式来允许用户并行化代码。这里给出一个官方文档的Python示例，具体可以见<a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/ray-overview/index.html#gentle-intro">A Gentle Introduction to Ray</a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># First, run `pip install ray`.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ray</span><br><span class="line">ray.init()</span><br><span class="line"></span><br><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x * x</span><br><span class="line"></span><br><span class="line">futures = [f.remote(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)]</span><br><span class="line">print(ray.get(futures)) <span class="comment"># [0, 1, 4, 9]</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.n = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">increment</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.n += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.n</span><br><span class="line"></span><br><span class="line">counters = [Counter.remote() <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)]</span><br><span class="line">[c.increment.remote() <span class="keyword">for</span> c <span class="keyword">in</span> counters]</span><br><span class="line">futures = [c.read.remote() <span class="keyword">for</span> c <span class="keyword">in</span> counters]</span><br><span class="line">print(ray.get(futures)) <span class="comment"># [1, 1, 1, 1]</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Tune-Scalable-Hyperparameter-Tuning"><a href="#Tune-Scalable-Hyperparameter-Tuning" class="headerlink" title="Tune: Scalable Hyperparameter Tuning"></a>Tune: Scalable Hyperparameter Tuning</h1><p><img src="/.xyz//..%5Cimg%5Ctune_logo.png" alt="tune_logo"></p>
+<h2 id="What-is-Ray-tune"><a href="#What-is-Ray-tune" class="headerlink" title="What is Ray.tune?"></a>What is Ray.tune?</h2><p>Tune is a Python library for experiment execution and hyperparameter tuning at any scale. Core features:</p>
+<ul>
+<li>Launch a multi-node <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/tutorials/tune-distributed.html#tune-distributed">distributed hyperparameter sweep</a> in less than 10 lines of code.</li>
+<li>Supports any machine learning framework, <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/tutorials/overview.html#tune-guides">including PyTorch, XGBoost, MXNet, and Keras</a>.</li>
+<li>Automatically manages <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/user-guide.html#tune-checkpoint">checkpoints</a> and logging to <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/user-guide.html#tune-logging">TensorBoard</a>.</li>
+<li>Choose among state of the art algorithms such as <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/api_docs/schedulers.html#tune-scheduler-pbt">Population Based Training (PBT)</a>, <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bayesopt">BayesOptSearch</a>, <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/api_docs/schedulers.html#tune-scheduler-hyperband">HyperBand/ASHA</a>.</li>
+<li>Move your models from training to serving on the same infrastructure with <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/tune/serve/index.html">Ray Serve</a>.</li>
+</ul>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>首先，需要简单地理解一下Ray.tune中的几个重要概念：</p>
+<ul>
+<li>Trial：Trial 是一次尝试，它会使用某组配置（例如，一组超参值，或者特定的神经网络架构）来进行训练，并返回该配置下的得分。本质上就是加入了NNIAPI的用户的原始代码。</li>
+<li>Experiment：实验是一次寻找模型的最佳超参组合，或最好的神经网络架构的整个过程。 它由Trial和AutoML算法所组成。</li>
+<li>Searchspace：搜索空间是模型调优的范围。 例如，超参的取值范围。</li>
+<li>Configuration：配置是来自搜索空间的一个参数实例，每个超参都会有一个特定的值。</li>
+<li>Tuner: Tuner就是具体的AutoML算法，会为下一个Trial生成新的配置。新的 Trial 会使用这组配置来运行。</li>
+<li>Assessor：Assessor分析Trial的中间结果（例如，测试数据集上定期的精度），来确定 Trial 是否应该被提前终止。</li>
+<li>Training Platform：训练平台是Trial的执行环境。根据Experiment的配置，可以是本机，远程服务器组，或其它大规模训练平台（例如，Ray自行提供的平台）</li>
+</ul>
+<p>那么你的实验（Experiment）便是在一定的搜索空间（Searchspace）内寻找最优的一组超参数组合（Configuration），使得该组参数对应的Trail会获得最高的准确率或者得分，在有限的时间和资源限制下，Tuner和Assessor会自动地帮助你更快更好的找到这组参数。</p>
+<h2 id="快速入手实例"><a href="#快速入手实例" class="headerlink" title="快速入手实例"></a>快速入手实例</h2><p>为了快速上手，理解Ray.tune的工作流程，不妨训练一个简单的Mnist手写数字识别，网络结构确定后，Ray.tune可以来帮你找到最优的超参。</p>
+<h3 id="Pytorch-Model-Setup"><a href="#Pytorch-Model-Setup" class="headerlink" title="Pytorch Model Setup"></a>Pytorch Model Setup</h3><p>首先需要搭建一个能够正常训练的模型，这一部分与Tune本身是无关的。</p>
+<p>导入一些依赖项：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ray <span class="keyword">import</span> tune</span><br><span class="line"><span class="keyword">from</span> ray.tune.schedulers <span class="keyword">import</span> ASHAScheduler</span><br></pre></td></tr></table></figure>
+
+<p>然后使用PyTorch定义一个简单的神经网络模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConvNet</span>(<span class="params">nn.Module</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        super(ConvNet, self).__init__()</span><br><span class="line">        <span class="comment"># In this example, we don&#x27;t change the model architecture</span></span><br><span class="line">        <span class="comment"># due to simplicity.</span></span><br><span class="line">        self.conv1 = nn.Conv2d(<span class="number">1</span>, <span class="number">3</span>, kernel_size=<span class="number">3</span>)</span><br><span class="line">        self.fc = nn.Linear(<span class="number">192</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        x = F.relu(F.max_pool2d(self.conv1(x), <span class="number">3</span>))</span><br><span class="line">        x = x.view(<span class="number">-1</span>, <span class="number">192</span>)</span><br><span class="line">        x = self.fc(x)</span><br><span class="line">        <span class="keyword">return</span> F.log_softmax(x, dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后定义具体的训练函数和测试函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Change these values if you want the training to run quicker or slower.</span></span><br><span class="line">EPOCH_SIZE = <span class="number">512</span></span><br><span class="line">TEST_SIZE = <span class="number">256</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">model, optimizer, train_loader</span>):</span></span><br><span class="line">    device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="keyword">for</span> batch_idx, (data, target) <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line">        <span class="comment"># We set this just for the example to run quickly.</span></span><br><span class="line">        <span class="keyword">if</span> batch_idx * len(data) &gt; EPOCH_SIZE:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        data, target = data.to(device), target.to(device)</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        output = model(data)</span><br><span class="line">        loss = F.nll_loss(output, target)</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">model, data_loader</span>):</span></span><br><span class="line">    device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line">    model.eval()</span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> batch_idx, (data, target) <span class="keyword">in</span> enumerate(data_loader):</span><br><span class="line">            <span class="comment"># We set this just for the example to run quickly.</span></span><br><span class="line">            <span class="keyword">if</span> batch_idx * len(data) &gt; TEST_SIZE:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            data, target = data.to(device), target.to(device)</span><br><span class="line">            outputs = model(data)</span><br><span class="line">            _, predicted = torch.max(outputs.data, <span class="number">1</span>)</span><br><span class="line">            total += target.size(<span class="number">0</span>)</span><br><span class="line">            correct += (predicted == target).sum().item()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> correct / total</span><br></pre></td></tr></table></figure>
+
+<h3 id="Setting-up-Tune"><a href="#Setting-up-Tune" class="headerlink" title="Setting up Tune"></a>Setting up Tune</h3><p>现在，需要定义一个可以用于并行训练模型的函数。这个函数将在每一个 <a target="_blank" rel="noopener" href="https://docs.ray.io/en/latest/actors.html#actor-guide">Ray Actor (process)</a> 上单独执行。因此，该函数需要将模型的性能传达回Tune主进程中。为此，在训练函数中调用 tune.report，它能够将性能的数值发送回Tune。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_mnist</span>(<span class="params">config</span>):</span></span><br><span class="line">    <span class="comment"># Data Setup</span></span><br><span class="line">    mnist_transforms = transforms.Compose(</span><br><span class="line">        [transforms.ToTensor(),</span><br><span class="line">         transforms.Normalize((<span class="number">0.1307</span>, ), (<span class="number">0.3081</span>, ))])</span><br><span class="line"></span><br><span class="line">    train_loader = DataLoader(</span><br><span class="line">        datasets.MNIST(<span class="string">&quot;~/data&quot;</span>, train=<span class="literal">True</span>, download=<span class="literal">True</span>, transform=mnist_transforms),</span><br><span class="line">        batch_size=<span class="number">64</span>,</span><br><span class="line">        shuffle=<span class="literal">True</span>)</span><br><span class="line">    test_loader = DataLoader(</span><br><span class="line">        datasets.MNIST(<span class="string">&quot;~/data&quot;</span>, train=<span class="literal">False</span>, transform=mnist_transforms),</span><br><span class="line">        batch_size=<span class="number">64</span>,</span><br><span class="line">        shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    model = ConvNet()</span><br><span class="line">    optimizer = optim.SGD(</span><br><span class="line">        model.parameters(), lr=config[<span class="string">&quot;lr&quot;</span>], momentum=config[<span class="string">&quot;momentum&quot;</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">        train(model, optimizer, train_loader)</span><br><span class="line">        acc = test(model, test_loader)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Send the current training result back to Tune</span></span><br><span class="line">        tune.report(mean_accuracy=acc)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">5</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="comment"># This saves the model to the trial directory</span></span><br><span class="line">            torch.save(model.state_dict(), <span class="string">&quot;./model.pth&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>为超参建立搜索空间后，调用 tune.run 就可以完成一次Experiment了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">search_space = &#123;</span><br><span class="line">    <span class="string">&quot;lr&quot;</span>: tune.sample_from(<span class="keyword">lambda</span> spec: <span class="number">10</span>**(<span class="number">-10</span> * np.random.rand())),</span><br><span class="line">    <span class="string">&quot;momentum&quot;</span>: tune.uniform(<span class="number">0.1</span>, <span class="number">0.9</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment this to enable distributed execution</span></span><br><span class="line"><span class="comment"># `ray.init(address=&quot;auto&quot;)`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Download the dataset first</span></span><br><span class="line">datasets.MNIST(<span class="string">&quot;~/data&quot;</span>, train=<span class="literal">True</span>, download=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">analysis = tune.run(train_mnist, config=search_space)</span><br></pre></td></tr></table></figure>
+
+<p>tune.run 会返回一个Analysis Object。它保存了优化过程的数据，可以绘图进行分析。同时每一个trial的数据自动保存在 ~/ray_results 文件夹中，也可以使用Tesnorboard来分析优化过程。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir ~/ray_results</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.xyz//..%5Cimg%5Cray1_tensorboard.png" alt="tensorboard"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="http://domain.com/awesome.mp3">
+            </audio>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='f16f580b288c93fceb5d'
+        data-cs='b844e802d1894562ccabe326fcf989821a9a0915'
+        data-r='blogissue'
+        data-o='sunrisulfr'
+        data-a='sunrisulfr'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
