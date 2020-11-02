@@ -8,7 +8,7 @@
   <entry>
     <title>&#39;Ray.Tune初探(一)：优雅的处理超参优化&#39;</title>
     <url>/2020/11/01/Ray-Tune%E5%88%9D%E6%8E%A2/</url>
-    <content><![CDATA[<h1 id="OVERVIEW-RAY"><a href="#OVERVIEW-RAY" class="headerlink" title="OVERVIEW RAY"></a>OVERVIEW RAY</h1><p><img src="/.xyz//img/ray_header_logo.png" alt="Ray_head_logo"></p>
+    <content><![CDATA[<h1 id="OVERVIEW-RAY"><a href="#OVERVIEW-RAY" class="headerlink" title="OVERVIEW RAY"></a>OVERVIEW RAY</h1><p><img src="/.xyz//ray_header_logo.png" alt="Ray_head_logo"></p>
 <h2 id="What-is-Ray"><a href="#What-is-Ray" class="headerlink" title="What is Ray?"></a>What is Ray?</h2><p><strong>Ray 提供了一个简单的通用 API，用于构建分布式应用程序。</strong></p>
 <p>Ray通过以下三步完成此任务：</p>
 <ol>
