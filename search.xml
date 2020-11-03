@@ -6,7 +6,7 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>ray1</title>
+    <title>Ray.Tune初探（一）：分布式超参优化</title>
     <url>/2020/11/03/ray1/</url>
     <content><![CDATA[<h1 id="OVERVIEW-RAY"><a href="#OVERVIEW-RAY" class="headerlink" title="OVERVIEW RAY"></a>OVERVIEW RAY</h1><p><img src="/2020/11/03/ray1/ray_header_logo.png" alt="Ray_head_logo"></p>
 <h2 id="What-is-Ray"><a href="#What-is-Ray" class="headerlink" title="What is Ray?"></a>What is Ray?</h2><p><strong>Ray 提供了一个简单的通用 API，用于构建分布式应用程序。</strong></p>
@@ -70,12 +70,11 @@
 <p><img src="/2020/11/03/ray1/ray1_tensorboard.png" alt="tensorboard"></p>
 ]]></content>
       <categories>
-        <category>分类1</category>
-        <category>分类2</category>
+        <category>机器学习</category>
       </categories>
       <tags>
-        <tag>标签1</tag>
-        <tag>标签2</tag>
+        <tag>Ray</tag>
+        <tag>分布式</tag>
       </tags>
   </entry>
 </search>
