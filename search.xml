@@ -8,7 +8,7 @@
   <entry>
     <title>ray1</title>
     <url>/2020/11/03/ray1/</url>
-    <content><![CDATA[<h1 id="OVERVIEW-RAY"><a href="#OVERVIEW-RAY" class="headerlink" title="OVERVIEW RAY"></a>OVERVIEW RAY</h1><p><img src="/.xyz//ray_header_logo.png" alt="Ray_head_logo"></p>
+    <content><![CDATA[<h1 id="OVERVIEW-RAY"><a href="#OVERVIEW-RAY" class="headerlink" title="OVERVIEW RAY"></a>OVERVIEW RAY</h1><p><img src="/2020/11/03/ray1/ray_header_logo.png" alt="Ray_head_logo"></p>
 <h2 id="What-is-Ray"><a href="#What-is-Ray" class="headerlink" title="What is Ray?"></a>What is Ray?</h2><p><strong>Ray 提供了一个简单的通用 API，用于构建分布式应用程序。</strong></p>
 <p>Ray通过以下三步完成此任务：</p>
 <ol>
@@ -27,7 +27,7 @@
 <h2 id="A-Simple-example"><a href="#A-Simple-example" class="headerlink" title="A Simple example"></a>A Simple example</h2><p>Ray 提供 Python 和 Java API。Ray 使用Tasks（functions）和Actors（Classes）两种形式来允许用户并行化代码。这里给出一个官方文档的Python示例，具体可以见<a href="https://docs.ray.io/en/latest/ray-overview/index.html#gentle-intro">A Gentle Introduction to Ray</a>。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># First, run `pip install ray`.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ray</span><br><span class="line">ray.init()</span><br><span class="line"></span><br><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x * x</span><br><span class="line"></span><br><span class="line">futures = [f.remote(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)]</span><br><span class="line">print(ray.get(futures)) <span class="comment"># [0, 1, 4, 9]</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.n = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">increment</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.n += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.n</span><br><span class="line"></span><br><span class="line">counters = [Counter.remote() <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)]</span><br><span class="line">[c.increment.remote() <span class="keyword">for</span> c <span class="keyword">in</span> counters]</span><br><span class="line">futures = [c.read.remote() <span class="keyword">for</span> c <span class="keyword">in</span> counters]</span><br><span class="line">print(ray.get(futures)) <span class="comment"># [1, 1, 1, 1]</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="Tune-Scalable-Hyperparameter-Tuning"><a href="#Tune-Scalable-Hyperparameter-Tuning" class="headerlink" title="Tune: Scalable Hyperparameter Tuning"></a>Tune: Scalable Hyperparameter Tuning</h1><p><img src="/.xyz//tune_logo.png" alt="tune_logo"></p>
+<h1 id="Tune-Scalable-Hyperparameter-Tuning"><a href="#Tune-Scalable-Hyperparameter-Tuning" class="headerlink" title="Tune: Scalable Hyperparameter Tuning"></a>Tune: Scalable Hyperparameter Tuning</h1><p><img src="/2020/11/03/ray1/tune_logo.png" alt="tune_logo"></p>
 <h2 id="What-is-Ray-tune"><a href="#What-is-Ray-tune" class="headerlink" title="What is Ray.tune?"></a>What is Ray.tune?</h2><p>Tune is a Python library for experiment execution and hyperparameter tuning at any scale. Core features:</p>
 <ul>
 <li>Launch a multi-node <a href="https://docs.ray.io/en/latest/tune/tutorials/tune-distributed.html#tune-distributed">distributed hyperparameter sweep</a> in less than 10 lines of code.</li>
@@ -67,7 +67,7 @@
 <p>tune.run 会返回一个Analysis Object。它保存了优化过程的数据，可以绘图进行分析。同时每一个trial的数据自动保存在 ~/ray_results 文件夹中，也可以使用Tesnorboard来分析优化过程。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensorboard --logdir ~/ray_results</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.xyz//ray1_tensorboard.png" alt="tensorboard"></p>
+<p><img src="/2020/11/03/ray1/ray1_tensorboard.png" alt="tensorboard"></p>
 ]]></content>
       <categories>
         <category>分类1</category>
