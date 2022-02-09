@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Sunrisulfr,"> 
-    <meta name="description" content="#"> 
+    <meta name="description" content="虽然DDPG有时可以获得很好的性能，但对于超参数和其他类型的调优，它经常是脆弱的。DDPG最常见的失效模式是学习后的q函数开始大幅高估q值，从而导致策略失效，因为它利用了q函数中的错误。Twin D,"> 
     <meta name="author" content="Sunrisulfr"> 
     <link rel="alternative" href="atom.xml" title="Sunrisulfr的菠萝屋" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -64,7 +64,26 @@
 
         </div>
         <div class="content markdown">
-            <h1 id><a href="#" class="headerlink" title="#"></a>#</h1>
+            <p>虽然DDPG有时可以获得很好的性能，但对于超参数和其他类型的调优，它经常是脆弱的。DDPG最常见的失效模式是学习后的q函数开始大幅高估q值，从而导致策略失效，因为它利用了q函数中的错误。Twin Delayed DDPG (TD3)是一种通过引入三个关键技巧来解决这个问题的算法:</p>
+<ul>
+<li><strong>Clipped Double Q-learning</strong>: TD3学习两个q函数而不是一个(因此称为“Twin”)，并使用两个q值中较小的一个来形成Bellman误差损失函数中的目标。</li>
+<li><strong>“Delayed Policy Update</strong>: TD3更新策略(和目标网络)的频率低于q函数。比如，每两个q函数更新进行一次策略更新。</li>
+<li><strong>Target Policy Smoothing</strong>: TD3向目标动作添加噪声，使策略更难利用Q函数错误，方法是使Q沿着动作的变化平滑。</li>
+</ul>
+<h1 id="Key-Equations"><a href="#Key-Equations" class="headerlink" title="Key Equations"></a>Key Equations</h1><h2 id="Target-Policy-Smoothing"><a href="#Target-Policy-Smoothing" class="headerlink" title="Target Policy Smoothing"></a>Target Policy Smoothing</h2><p>用于形成q学习目标的动作是基于目标策略，$\mu<em>{\theta</em>{\text{targ}}} $，但是在动作的每个维度上都添加了剪切噪声。在添加了被剪辑的噪声之后，目标动作就会被剪辑到有效的动作范围内(所有有效的动作$a$，满足$a<em>{Low} \leq a \leq a</em>{High}$)。目标操作如下:</p>
+<script type="math/tex; mode=display">
+a'(s') = \text{clip}\left(\mu_{\theta_{\text{targ}}}(s') + \text{clip}(\epsilon,-c,c), a_{Low}, a_{High}\right), \;\; \epsilon \sim \mathcal{N}(0, \sigma))</script><p>目标策略平滑实质上是算法的正则化。它解决了DDPG中可能发生的特定失效模式:如果q函数近似器为某些动作开发了一个不正确的尖峰，策略将迅速利用该尖峰，然后产生脆弱或不正确的行为。这可以通过平滑类似行为的q函数来避免，这是政策平滑的目标。</p>
+<h2 id="Clipped-Double-Q-learning"><a href="#Clipped-Double-Q-learning" class="headerlink" title="Clipped Double Q-learning"></a>Clipped Double Q-learning</h2><p>两个q函数都使用一个目标，使用两个q函数中的任意一个计算出一个较小的目标值:</p>
+<script type="math/tex; mode=display">
+y(r,s',d) = r + \gamma (1 - d) \min_{i=1,2} Q_{\phi_{i, \text{targ}}}(s', a'(s'))</script><p>然后他们都通过回归这个目标来学习：</p>
+<script type="math/tex; mode=display">
+L(\phi_1, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bigg( Q_{\phi_1}(s,a) - y(r,s',d) \Bigg)^2},</script><script type="math/tex; mode=display">
+L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bigg( Q_{\phi_2}(s,a) - y(r,s',d) \Bigg)^2}.</script><p>为目标使用较小的q值，并向其回归，有助于避免q函数中的过高估计。</p>
+<p>最后:通过最大化$Q_{\phi_1}$来学习策略:</p>
+<script type="math/tex; mode=display">
+\max_{\theta} \mathop{E}\limits_{s \sim {\mathcal D}}\left[ Q_{\phi_1}(s, \mu_{\theta}(s)) \right]</script><p>这和DDPG几乎没有什么区别。然而，在TD3中，策略的更新频率低于q函数。这有助于抑制DDPG中由于策略更新更改目标的方式而出现的波动性。</p>
+<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><p><img src="/2021/01/10/Twin%20Delayed%20DDPG%20(TD3)/TD3Algorithm.svg" alt="Algorithm"></p>
+
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
