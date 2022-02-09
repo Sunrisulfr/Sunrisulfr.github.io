@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AlphaGO：详解 - Sunrisulfr的菠萝屋</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Sunrisulfr,"> 
+    <meta name="description" content="了解AlphaGO
+
+选出好棋-增强学习Reinforcement Learning
+模仿学习增强学习
+“手下一步棋，心想三步棋”-蒙特卡罗树MCTS围棋问题实际上是一个树的搜索问题，当前局面是树的,"> 
+    <meta name="author" content="Sunrisulfr"> 
+    <link rel="alternative" href="atom.xml" title="Sunrisulfr的菠萝屋" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Sunrisulfr的菠萝屋</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://sunrisulfr.github.io"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">AlphaGO：详解</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">AlphaGO：详解</h1>
+        <div class="stuff">
+            <span>十二月 31, 2020</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/MCTS/" rel="tag">MCTS</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h1 id="了解AlphaGO"><a href="#了解AlphaGO" class="headerlink" title="了解AlphaGO"></a>了解AlphaGO</h1><!-- ![Ray_head_logo](AlphaGO/AlphaGo.jpg) -->
+
+<h2 id="选出好棋-增强学习Reinforcement-Learning"><a href="#选出好棋-增强学习Reinforcement-Learning" class="headerlink" title="选出好棋-增强学习Reinforcement Learning"></a>选出好棋-增强学习Reinforcement Learning</h2><p><img src="/2020/12/31/alphago/Network.PNG" alt="Network"></p>
+<h3 id="模仿学习"><a href="#模仿学习" class="headerlink" title="模仿学习"></a>模仿学习</h3><h3 id="增强学习"><a href="#增强学习" class="headerlink" title="增强学习"></a>增强学习</h3><p><img src="/2020/12/31/alphago/RL.PNG" alt="RL"></p>
+<h2 id="“手下一步棋，心想三步棋”-蒙特卡罗树MCTS"><a href="#“手下一步棋，心想三步棋”-蒙特卡罗树MCTS" class="headerlink" title="“手下一步棋，心想三步棋”-蒙特卡罗树MCTS"></a>“手下一步棋，心想三步棋”-蒙特卡罗树MCTS</h2><p>围棋问题实际上是一个树的搜索问题，当前局面是树的根，树根有多少分支，对应着下一步有多少对应的落子，这是树的宽度。之后树不断的生长（推演，模拟），直到叶子节点（开始落子）。从树根到叶子节点，分了多少次枝就是树的深度。树的广度越宽，深度越深，搜索所需要的时间越长。如：围棋一共361个交叉点，越往后，可以落子的位子越少，所以平均下来树的宽度大约为250，深度大约150.如果想遍历整个围棋树，需要搜索250的150次方。所以走一步前，需要搜索折磨多次数是不切实际的。</p>
+<p>每次AlphaGo都会自己和自己下棋，每一步都由一个函数决定应该走哪一步，它会考虑如下几个点：</p>
+<p>1.这个局面大概该怎么下？（使用SL Policy network）</p>
+<p>2.下一步会导致什么样的局面？</p>
+<p>3.我赢的概率是多少？（使用Value network+rollout）</p>
+<p>首先，“走棋网络”是训练的当前局面s的下一步走棋位置的概率分布，它模拟的是在某个局面下，人类的常见的走棋行为，并不评估走棋之后是否赢棋（区别概率分布与赢棋的概率？）。所以，我们可以假设优秀的走棋方法是在人类常见的走棋范围内的，这样就大大减少了搜索树的宽度。</p>
+<p>这时候，使用SL policy network 完成了第一落子，假设走了a1之后，然后对方开始走a2，接着我在走a3.这样一步步的模拟下去…..(这里使用两个SL policy network的自我对弈)假设V(s,a1)赢棋的概率为70%,对方走了V(s,a1,a2)对方赢棋的概率为60%。而走到第三步的时候，我方的赢棋概率V(s,a1,a2,a3)是35%，这时候还要不要在走a1呢？</p>
+<p>重新定义V(s)的实际意义：它用来预测该局面以监督学习的策略网络（SL Policy network）自我对弈后赢棋的概率,也就是模拟N次后，AlphaGo认为她走这步棋赢的概率，这个概率是不断的更新。我们用V<em>表示某一局面赢棋的概率。刚开始v</em>(s,a1)=70%,在下完第三步后更新为v*(s,a1)=(70%-60%+35%)/3=15%，这个时候V(s,a1)=15%，已经不是之前的70%了，也就是说这个位置可能不是赢棋的概率最大的位置，所以舍弃。</p>
+<p>然而发现，SL Policy network 来进行自我对弈太慢了(3毫秒)，重新训练了一个mini的SL Policy network，叫做rollout(2微秒). 它的输入比policy network 小，它的模型也小，它没有Policy network 准，但是比他快。</p>
+<p>这就是蒙特卡罗树搜索的基本过程，</p>
+<p>1.它首先使用SL policy network选出可能的落子区域，中间开始使用value network来选择可能的落子区域。</p>
+<p>2.使用快速走子（Fast rollout）来适当牺牲走棋质量的条件下，通过Fast rollout的自我对弈（快速模拟）出最大概率的落子方案，使得AlphaGo 能够看到未来。</p>
+<p>3.使用Value network对当前形势做一个判断，判断赢的概率，使得AlphaGo能够看到当下。可见，MC树融合了policy network 、Fast rollout和Value network，使之形成一个完整的系统。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='f16f580b288c93fceb5d'
+        data-cs='b844e802d1894562ccabe326fcf989821a9a0915'
+        data-r='blogissue'
+        data-o='sunrisulfr'
+        data-a='sunrisulfr'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

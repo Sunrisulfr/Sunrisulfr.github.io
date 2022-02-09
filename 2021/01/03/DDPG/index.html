@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>确定性策略梯度DDPG - Sunrisulfr的菠萝屋</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Sunrisulfr,"> 
+    <meta name="description" content="DDPG是google DeepMind团队提出的一种用于输出确定性动作的算法，它解决了Actor-Critic 神经网络每次参数更新前后都存在相关性，导致神经网络只能片面的看待问题这一缺点。同时也,"> 
+    <meta name="author" content="Sunrisulfr"> 
+    <link rel="alternative" href="atom.xml" title="Sunrisulfr的菠萝屋" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Sunrisulfr的菠萝屋</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://sunrisulfr.github.io"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">确定性策略梯度DDPG</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">确定性策略梯度DDPG</h1>
+        <div class="stuff">
+            <span>一月 03, 2021</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>DDPG是google DeepMind团队提出的一种用于输出确定性动作的算法，它解决了Actor-Critic 神经网络每次参数更新前后都存在相关性，导致神经网络只能片面的看待问题这一缺点。同时也解决了DQN不能用于连续性动作的缺点。</p>
+<p>论文链接：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1509.02971.pdf">https://arxiv.org/pdf/1509.02971.pdf</a></p>
+<h1 id="确定性策略"><a href="#确定性策略" class="headerlink" title="确定性策略"></a>确定性策略</h1><p>确定性策略是和随机策略相对而言的，对于某一些动作集合来说，它可能是连续值，或者非常高维的离散值，这样动作的空间维度极大。如果我们使用随机策略，即像DQN一样研究它所有的可能动作的概率，并计算各个可能的动作的价值的话，那需要的样本量是非常大才可行的。于是有人就想出使用确定性策略来简化这个问题。</p>
+<p>作为随机策略，在相同的策略，在同一个状态处，采用的动作是基于一个概率分布的，即是不确定的。而确定性策略则决定简单点，虽然在同一个状态处，采用的动作概率不同，但是最大概率只有一个，如果我们只取最大概率的动作，去掉这个概率分布，那么就简单多了。即作为确定性策略，相同的策略，在同一个状态处，动作是唯一确定的，即策略变成 $\pi_\theta(s) = a$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLPActorCritic</span>(<span class="params">nn.Module</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, observation_space, action_space, hidden_sizes=(<span class="params"><span class="number">256</span>,<span class="number">256</span></span>),</span></span></span><br><span class="line"><span class="function"><span class="params">                 activation=nn.ReLU</span>):</span></span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        obs_dim = observation_space.shape[<span class="number">0</span>]</span><br><span class="line">        act_dim = action_space.shape[<span class="number">0</span>]</span><br><span class="line">        act_limit = action_space.high[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># build policy and value functions</span></span><br><span class="line">        self.pi = MLPActor(obs_dim, act_dim, hidden_sizes, activation, act_limit)</span><br><span class="line">        self.q = MLPQFunction(obs_dim, act_dim, hidden_sizes, activation)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">act</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="keyword">return</span> self.pi(obs).numpy()</span><br></pre></td></tr></table></figure>
+<p>理由：</p>
+<ul>
+<li>即使通过PG学习得到了随机策略之后，在每一步行为时，我们还需要对得到的最优策略概率分布进行采样，才能获得action的具体值；而action通常是高维的向量，比如25维、50维，在高维的action空间的频繁采样，无疑是很耗费计算能力的；</li>
+<li>在PG的学习过程中，每一步计算policy gradient都需要在整个action space进行积分。</li>
+</ul>
+<h1 id="DPG到DDPG"><a href="#DPG到DDPG" class="headerlink" title="DPG到DDPG"></a>DPG到DDPG</h1><p>使用卷积神经网络来模拟策略函数和Q函数，并用深度学习的方法来训练，证明了在RL方法中，非线性模拟函数的准确性和高性能、可收敛；</p>
+<p>而DPG中，可以看成使用线性回归的机器学习方法：使用带参数的线性函数来模拟策略函数和Q函数，然后使用线性回归的方法进行训练。</p>
+<p>experience replay memory的使用：actor同环境交互时，产生的transition数据序列是在时间上高度关联(correlated)的，如果这些数据序列直接用于训练，会导致神经网络的overfit，不易收敛。</p>
+<p>DDPG的actor将transition数据先存入experience replay buffer, 然后在训练时，从experience replay buffer中随机采样mini-batch数据，这样采样得到的数据可以认为是无关联的。</p>
+<p>target 网络和online 网络的使用， 使的学习过程更加稳定，收敛更有保障。</p>
+<h2 id="实现框架"><a href="#实现框架" class="headerlink" title="实现框架"></a>实现框架</h2><p><img src="/2021/01/03/DDPG/Framework.PNG" alt="framwork"></p>
+<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p><img src="/2021/01/03/DDPG/Algorithm.PNG" alt="algorithm"></p>
+<h2 id="Exploration"><a href="#Exploration" class="headerlink" title="Exploration"></a>Exploration</h2><p>DDPG以非策略的方式训练确定性策略。因为策略是确定的，如果agent要探索on-policy，在一开始它可能不会尝试足够广泛的行动来找到有用的学习信号。为了使DDPG政策更好地探索，我们在训练时为他们的行动添加噪音。原始DDPG论文的作者推荐了时间相关的OU噪声，但最近的结果表明，不相关、均值为零的高斯噪声工作得很好。因为后者更简单，所以更可取。为了便于获得高质量的训练数据，您可以在训练过程中减少噪声的规模。(我们在实现中没有这样做，并始终保持噪声规模固定。)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_action</span>(<span class="params">o, noise_scale</span>):</span></span><br><span class="line">        a = ac.act(torch.as_tensor(o, dtype=torch.float32))</span><br><span class="line">        a += noise_scale * np.random.randn(act_dim)</span><br><span class="line">        <span class="keyword">return</span> np.clip(a, -act_limit, act_limit)</span><br></pre></td></tr></table></figure>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='f16f580b288c93fceb5d'
+        data-cs='b844e802d1894562ccabe326fcf989821a9a0915'
+        data-r='blogissue'
+        data-o='sunrisulfr'
+        data-a='sunrisulfr'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Ray.Tune初探（一）：分布式超参优化</title>
+    <url>/2020/11/03/ray1/</url>
+    <content><![CDATA[<h1 id="OVERVIEW-RAY"><a href="#OVERVIEW-RAY" class="headerlink" title="OVERVIEW RAY"></a>OVERVIEW RAY</h1><p><img src="/2020/11/03/ray1/ray_header_logo.png" alt="Ray_head_logo"></p>
+<h2 id="What-is-Ray"><a href="#What-is-Ray" class="headerlink" title="What is Ray?"></a>What is Ray?</h2><p><strong>Ray 提供了一个简单的通用 API，用于构建分布式应用程序。</strong></p>
+<p>Ray通过以下三步完成此任务：</p>
+<ol>
+<li>为构建和运行分布式应用程序提供简单的基元。</li>
+<li>使最终用户能够并行化单个计算机代码，很少或零更改代码。</li>
+<li>在核心 Ray 上包括一个大型应用程序、库和工具生态系统，以启用复杂的应用程序。</li>
+</ol>
+<p><strong>Ray Core</strong>为应用程序构建提供了简单的基元。</p>
+<p>在<strong>Ray Core</strong>的顶部是解决机器学习中问题的几个库：</p>
+<ul>
+<li><a href="https://docs.ray.io/en/latest/tune/index.html">Tune: Scalable Hyperparameter Tuning</a></li>
+<li><a href="https://docs.ray.io/en/latest/rllib.html#rllib-index">RLlib: Scalable Reinforcement Learning</a></li>
+<li><a href="https://docs.ray.io/en/latest/raysgd/raysgd.html#sgd-index">RaySGD: Distributed Training Wrappers</a></li>
+<li><a href="https://docs.ray.io/en/latest/serve/index.html#rayserve">Ray Serve: Scalable and Programmable Serving</a></li>
+</ul>
+<h2 id="A-Simple-example"><a href="#A-Simple-example" class="headerlink" title="A Simple example"></a>A Simple example</h2><p>Ray 提供 Python 和 Java API。Ray 使用Tasks（functions）和Actors（Classes）两种形式来允许用户并行化代码。这里给出一个官方文档的Python示例，具体可以见<a href="https://docs.ray.io/en/latest/ray-overview/index.html#gentle-intro">A Gentle Introduction to Ray</a>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># First, run `pip install ray`.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ray</span><br><span class="line">ray.init()</span><br><span class="line"></span><br><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x * x</span><br><span class="line"></span><br><span class="line">futures = [f.remote(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)]</span><br><span class="line">print(ray.get(futures)) <span class="comment"># [0, 1, 4, 9]</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.n = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">increment</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.n += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.n</span><br><span class="line"></span><br><span class="line">counters = [Counter.remote() <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)]</span><br><span class="line">[c.increment.remote() <span class="keyword">for</span> c <span class="keyword">in</span> counters]</span><br><span class="line">futures = [c.read.remote() <span class="keyword">for</span> c <span class="keyword">in</span> counters]</span><br><span class="line">print(ray.get(futures)) <span class="comment"># [1, 1, 1, 1]</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Tune-Scalable-Hyperparameter-Tuning"><a href="#Tune-Scalable-Hyperparameter-Tuning" class="headerlink" title="Tune: Scalable Hyperparameter Tuning"></a>Tune: Scalable Hyperparameter Tuning</h1><p><img src="/2020/11/03/ray1/tune_logo.png" alt="tune_logo"></p>
+<h2 id="What-is-Ray-tune"><a href="#What-is-Ray-tune" class="headerlink" title="What is Ray.tune?"></a>What is Ray.tune?</h2><p>Tune is a Python library for experiment execution and hyperparameter tuning at any scale. Core features:</p>
+<ul>
+<li>Launch a multi-node <a href="https://docs.ray.io/en/latest/tune/tutorials/tune-distributed.html#tune-distributed">distributed hyperparameter sweep</a> in less than 10 lines of code.</li>
+<li>Supports any machine learning framework, <a href="https://docs.ray.io/en/latest/tune/tutorials/overview.html#tune-guides">including PyTorch, XGBoost, MXNet, and Keras</a>.</li>
+<li>Automatically manages <a href="https://docs.ray.io/en/latest/tune/user-guide.html#tune-checkpoint">checkpoints</a> and logging to <a href="https://docs.ray.io/en/latest/tune/user-guide.html#tune-logging">TensorBoard</a>.</li>
+<li>Choose among state of the art algorithms such as <a href="https://docs.ray.io/en/latest/tune/api_docs/schedulers.html#tune-scheduler-pbt">Population Based Training (PBT)</a>, <a href="https://docs.ray.io/en/latest/tune/api_docs/suggestion.html#bayesopt">BayesOptSearch</a>, <a href="https://docs.ray.io/en/latest/tune/api_docs/schedulers.html#tune-scheduler-hyperband">HyperBand/ASHA</a>.</li>
+<li>Move your models from training to serving on the same infrastructure with <a href="https://docs.ray.io/en/latest/tune/serve/index.html">Ray Serve</a>.</li>
+</ul>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>首先，需要简单地理解一下Ray.tune中的几个重要概念：</p>
+<ul>
+<li>Trial：Trial 是一次尝试，它会使用某组配置（例如，一组超参值，或者特定的神经网络架构）来进行训练，并返回该配置下的得分。本质上就是加入了NNIAPI的用户的原始代码。</li>
+<li>Experiment：实验是一次寻找模型的最佳超参组合，或最好的神经网络架构的整个过程。 它由Trial和AutoML算法所组成。</li>
+<li>Searchspace：搜索空间是模型调优的范围。 例如，超参的取值范围。</li>
+<li>Configuration：配置是来自搜索空间的一个参数实例，每个超参都会有一个特定的值。</li>
+<li>Tuner: Tuner就是具体的AutoML算法，会为下一个Trial生成新的配置。新的 Trial 会使用这组配置来运行。</li>
+<li>Assessor：Assessor分析Trial的中间结果（例如，测试数据集上定期的精度），来确定 Trial 是否应该被提前终止。</li>
+<li>Training Platform：训练平台是Trial的执行环境。根据Experiment的配置，可以是本机，远程服务器组，或其它大规模训练平台（例如，Ray自行提供的平台）</li>
+</ul>
+<p>那么你的实验（Experiment）便是在一定的搜索空间（Searchspace）内寻找最优的一组超参数组合（Configuration），使得该组参数对应的Trail会获得最高的准确率或者得分，在有限的时间和资源限制下，Tuner和Assessor会自动地帮助你更快更好的找到这组参数。</p>
+<h2 id="快速入手实例"><a href="#快速入手实例" class="headerlink" title="快速入手实例"></a>快速入手实例</h2><p>为了快速上手，理解Ray.tune的工作流程，不妨训练一个简单的Mnist手写数字识别，网络结构确定后，Ray.tune可以来帮你找到最优的超参。</p>
+<h3 id="Pytorch-Model-Setup"><a href="#Pytorch-Model-Setup" class="headerlink" title="Pytorch Model Setup"></a>Pytorch Model Setup</h3><p>首先需要搭建一个能够正常训练的模型，这一部分与Tune本身是无关的。</p>
+<p>导入一些依赖项：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ray <span class="keyword">import</span> tune</span><br><span class="line"><span class="keyword">from</span> ray.tune.schedulers <span class="keyword">import</span> ASHAScheduler</span><br></pre></td></tr></table></figure>
+
+<p>然后使用PyTorch定义一个简单的神经网络模型。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConvNet</span>(<span class="params">nn.Module</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        super(ConvNet, self).__init__()</span><br><span class="line">        <span class="comment"># In this example, we don&#x27;t change the model architecture</span></span><br><span class="line">        <span class="comment"># due to simplicity.</span></span><br><span class="line">        self.conv1 = nn.Conv2d(<span class="number">1</span>, <span class="number">3</span>, kernel_size=<span class="number">3</span>)</span><br><span class="line">        self.fc = nn.Linear(<span class="number">192</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        x = F.relu(F.max_pool2d(self.conv1(x), <span class="number">3</span>))</span><br><span class="line">        x = x.view(<span class="number">-1</span>, <span class="number">192</span>)</span><br><span class="line">        x = self.fc(x)</span><br><span class="line">        <span class="keyword">return</span> F.log_softmax(x, dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后定义具体的训练函数和测试函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Change these values if you want the training to run quicker or slower.</span></span><br><span class="line">EPOCH_SIZE = <span class="number">512</span></span><br><span class="line">TEST_SIZE = <span class="number">256</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">model, optimizer, train_loader</span>):</span></span><br><span class="line">    device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="keyword">for</span> batch_idx, (data, target) <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line">        <span class="comment"># We set this just for the example to run quickly.</span></span><br><span class="line">        <span class="keyword">if</span> batch_idx * len(data) &gt; EPOCH_SIZE:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        data, target = data.to(device), target.to(device)</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        output = model(data)</span><br><span class="line">        loss = F.nll_loss(output, target)</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">model, data_loader</span>):</span></span><br><span class="line">    device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line">    model.eval()</span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> batch_idx, (data, target) <span class="keyword">in</span> enumerate(data_loader):</span><br><span class="line">            <span class="comment"># We set this just for the example to run quickly.</span></span><br><span class="line">            <span class="keyword">if</span> batch_idx * len(data) &gt; TEST_SIZE:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            data, target = data.to(device), target.to(device)</span><br><span class="line">            outputs = model(data)</span><br><span class="line">            _, predicted = torch.max(outputs.data, <span class="number">1</span>)</span><br><span class="line">            total += target.size(<span class="number">0</span>)</span><br><span class="line">            correct += (predicted == target).sum().item()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> correct / total</span><br></pre></td></tr></table></figure>
+
+<h3 id="Setting-up-Tune"><a href="#Setting-up-Tune" class="headerlink" title="Setting up Tune"></a>Setting up Tune</h3><p>现在，需要定义一个可以用于并行训练模型的函数。这个函数将在每一个 <a href="https://docs.ray.io/en/latest/actors.html#actor-guide">Ray Actor (process)</a> 上单独执行。因此，该函数需要将模型的性能传达回Tune主进程中。为此，在训练函数中调用 tune.report，它能够将性能的数值发送回Tune。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_mnist</span>(<span class="params">config</span>):</span></span><br><span class="line">    <span class="comment"># Data Setup</span></span><br><span class="line">    mnist_transforms = transforms.Compose(</span><br><span class="line">        [transforms.ToTensor(),</span><br><span class="line">         transforms.Normalize((<span class="number">0.1307</span>, ), (<span class="number">0.3081</span>, ))])</span><br><span class="line"></span><br><span class="line">    train_loader = DataLoader(</span><br><span class="line">        datasets.MNIST(<span class="string">&quot;~/data&quot;</span>, train=<span class="literal">True</span>, download=<span class="literal">True</span>, transform=mnist_transforms),</span><br><span class="line">        batch_size=<span class="number">64</span>,</span><br><span class="line">        shuffle=<span class="literal">True</span>)</span><br><span class="line">    test_loader = DataLoader(</span><br><span class="line">        datasets.MNIST(<span class="string">&quot;~/data&quot;</span>, train=<span class="literal">False</span>, transform=mnist_transforms),</span><br><span class="line">        batch_size=<span class="number">64</span>,</span><br><span class="line">        shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    model = ConvNet()</span><br><span class="line">    optimizer = optim.SGD(</span><br><span class="line">        model.parameters(), lr=config[<span class="string">&quot;lr&quot;</span>], momentum=config[<span class="string">&quot;momentum&quot;</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">        train(model, optimizer, train_loader)</span><br><span class="line">        acc = test(model, test_loader)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Send the current training result back to Tune</span></span><br><span class="line">        tune.report(mean_accuracy=acc)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">5</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="comment"># This saves the model to the trial directory</span></span><br><span class="line">            torch.save(model.state_dict(), <span class="string">&quot;./model.pth&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>为超参建立搜索空间后，调用 tune.run 就可以完成一次Experiment了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">search_space = &#123;</span><br><span class="line">    <span class="string">&quot;lr&quot;</span>: tune.sample_from(<span class="keyword">lambda</span> spec: <span class="number">10</span>**(<span class="number">-10</span> * np.random.rand())),</span><br><span class="line">    <span class="string">&quot;momentum&quot;</span>: tune.uniform(<span class="number">0.1</span>, <span class="number">0.9</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment this to enable distributed execution</span></span><br><span class="line"><span class="comment"># `ray.init(address=&quot;auto&quot;)`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Download the dataset first</span></span><br><span class="line">datasets.MNIST(<span class="string">&quot;~/data&quot;</span>, train=<span class="literal">True</span>, download=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">analysis = tune.run(train_mnist, config=search_space)</span><br></pre></td></tr></table></figure>
+
+<p>tune.run 会返回一个Analysis Object。它保存了优化过程的数据，可以绘图进行分析。同时每一个trial的数据自动保存在 ~/ray_results 文件夹中，也可以使用Tesnorboard来分析优化过程。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensorboard --logdir ~/ray_results</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/11/03/ray1/ray1_tensorboard.png" alt="tensorboard"></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>Ray</tag>
+        <tag>分布式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ray.Tune初探（二）：Guide</title>
+    <url>/2020/12/03/ray2/</url>
+    <content><![CDATA[<h1 id="Tune：使用指南"><a href="#Tune：使用指南" class="headerlink" title="Tune：使用指南"></a>Tune：使用指南</h1><h2 id="资源-Parallelism-GPUs-Distributed"><a href="#资源-Parallelism-GPUs-Distributed" class="headerlink" title="资源 (Parallelism, GPUs, Distributed)"></a>资源 (Parallelism, GPUs, Distributed)</h2><p>Parallelism is determined by <code>resources_per_trial</code> (defaulting to 1 CPU, 0 GPU per trial) and the resources available to Tune (<code>ray.cluster_resources()</code>).</p>
+<p>By default, Tune automatically runs N concurrent trials, where N is the number of CPUs (cores) on your machine.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 4 concurrent trials at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<p>You can override this parallelism with <code>resources_per_trial</code>. Here you can specify your resource requests using either a dictionary or a PlacementGroupFactory object. In any case, Ray Tune will try to start a placement group for each trial.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 2 concurrent trials at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">2</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 1 trial at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fractional values are also supported, (i.e., &#123;&quot;cpu&quot;: 0.5&#125;).</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">0.5</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="搜索空间-Grid-Random"><a href="#搜索空间-Grid-Random" class="headerlink" title="搜索空间 (Grid/Random)"></a>搜索空间 (Grid/Random)</h2><h2 id><a href="#" class="headerlink" title></a></h2>]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>Ray</tag>
+        <tag>分布式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AlphaGO：详解</title>
+    <url>/2020/12/31/alphago/</url>
+    <content><![CDATA[<h1 id="了解AlphaGO"><a href="#了解AlphaGO" class="headerlink" title="了解AlphaGO"></a>了解AlphaGO</h1><!-- ![Ray_head_logo](AlphaGO/AlphaGo.jpg) -->
+
+<h2 id="选出好棋-增强学习Reinforcement-Learning"><a href="#选出好棋-增强学习Reinforcement-Learning" class="headerlink" title="选出好棋-增强学习Reinforcement Learning"></a>选出好棋-增强学习Reinforcement Learning</h2><p><img src="/2020/12/31/alphago/Network.PNG" alt="Network"></p>
+<h3 id="模仿学习"><a href="#模仿学习" class="headerlink" title="模仿学习"></a>模仿学习</h3><h3 id="增强学习"><a href="#增强学习" class="headerlink" title="增强学习"></a>增强学习</h3><p><img src="/2020/12/31/alphago/RL.PNG" alt="RL"></p>
+<h2 id="“手下一步棋，心想三步棋”-蒙特卡罗树MCTS"><a href="#“手下一步棋，心想三步棋”-蒙特卡罗树MCTS" class="headerlink" title="“手下一步棋，心想三步棋”-蒙特卡罗树MCTS"></a>“手下一步棋，心想三步棋”-蒙特卡罗树MCTS</h2><p>围棋问题实际上是一个树的搜索问题，当前局面是树的根，树根有多少分支，对应着下一步有多少对应的落子，这是树的宽度。之后树不断的生长（推演，模拟），直到叶子节点（开始落子）。从树根到叶子节点，分了多少次枝就是树的深度。树的广度越宽，深度越深，搜索所需要的时间越长。如：围棋一共361个交叉点，越往后，可以落子的位子越少，所以平均下来树的宽度大约为250，深度大约150.如果想遍历整个围棋树，需要搜索250的150次方。所以走一步前，需要搜索折磨多次数是不切实际的。</p>
+<p>每次AlphaGo都会自己和自己下棋，每一步都由一个函数决定应该走哪一步，它会考虑如下几个点：</p>
+<p>1.这个局面大概该怎么下？（使用SL Policy network）</p>
+<p>2.下一步会导致什么样的局面？</p>
+<p>3.我赢的概率是多少？（使用Value network+rollout）</p>
+<p>首先，“走棋网络”是训练的当前局面s的下一步走棋位置的概率分布，它模拟的是在某个局面下，人类的常见的走棋行为，并不评估走棋之后是否赢棋（区别概率分布与赢棋的概率？）。所以，我们可以假设优秀的走棋方法是在人类常见的走棋范围内的，这样就大大减少了搜索树的宽度。</p>
+<p>这时候，使用SL policy network 完成了第一落子，假设走了a1之后，然后对方开始走a2，接着我在走a3.这样一步步的模拟下去…..(这里使用两个SL policy network的自我对弈)假设V(s,a1)赢棋的概率为70%,对方走了V(s,a1,a2)对方赢棋的概率为60%。而走到第三步的时候，我方的赢棋概率V(s,a1,a2,a3)是35%，这时候还要不要在走a1呢？</p>
+<p>重新定义V(s)的实际意义：它用来预测该局面以监督学习的策略网络（SL Policy network）自我对弈后赢棋的概率,也就是模拟N次后，AlphaGo认为她走这步棋赢的概率，这个概率是不断的更新。我们用V<em>表示某一局面赢棋的概率。刚开始v</em>(s,a1)=70%,在下完第三步后更新为v*(s,a1)=(70%-60%+35%)/3=15%，这个时候V(s,a1)=15%，已经不是之前的70%了，也就是说这个位置可能不是赢棋的概率最大的位置，所以舍弃。</p>
+<p>然而发现，SL Policy network 来进行自我对弈太慢了(3毫秒)，重新训练了一个mini的SL Policy network，叫做rollout(2微秒). 它的输入比policy network 小，它的模型也小，它没有Policy network 准，但是比他快。</p>
+<p>这就是蒙特卡罗树搜索的基本过程，</p>
+<p>1.它首先使用SL policy network选出可能的落子区域，中间开始使用value network来选择可能的落子区域。</p>
+<p>2.使用快速走子（Fast rollout）来适当牺牲走棋质量的条件下，通过Fast rollout的自我对弈（快速模拟）出最大概率的落子方案，使得AlphaGo 能够看到未来。</p>
+<p>3.使用Value network对当前形势做一个判断，判断赢的概率，使得AlphaGo能够看到当下。可见，MC树融合了policy network 、Fast rollout和Value network，使之形成一个完整的系统。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
+        <tag>MCTS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>确定性策略梯度DDPG</title>
+    <url>/2021/01/03/DDPG/</url>
+    <content><![CDATA[<p>DDPG是google DeepMind团队提出的一种用于输出确定性动作的算法，它解决了Actor-Critic 神经网络每次参数更新前后都存在相关性，导致神经网络只能片面的看待问题这一缺点。同时也解决了DQN不能用于连续性动作的缺点。</p>
+<p>论文链接：<a href="https://arxiv.org/pdf/1509.02971.pdf">https://arxiv.org/pdf/1509.02971.pdf</a></p>
+<h1 id="确定性策略"><a href="#确定性策略" class="headerlink" title="确定性策略"></a>确定性策略</h1><p>确定性策略是和随机策略相对而言的，对于某一些动作集合来说，它可能是连续值，或者非常高维的离散值，这样动作的空间维度极大。如果我们使用随机策略，即像DQN一样研究它所有的可能动作的概率，并计算各个可能的动作的价值的话，那需要的样本量是非常大才可行的。于是有人就想出使用确定性策略来简化这个问题。</p>
+<p>作为随机策略，在相同的策略，在同一个状态处，采用的动作是基于一个概率分布的，即是不确定的。而确定性策略则决定简单点，虽然在同一个状态处，采用的动作概率不同，但是最大概率只有一个，如果我们只取最大概率的动作，去掉这个概率分布，那么就简单多了。即作为确定性策略，相同的策略，在同一个状态处，动作是唯一确定的，即策略变成 $\pi_\theta(s) = a$。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLPActorCritic</span>(<span class="params">nn.Module</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, observation_space, action_space, hidden_sizes=(<span class="params"><span class="number">256</span>,<span class="number">256</span></span>),</span></span></span><br><span class="line"><span class="function"><span class="params">                 activation=nn.ReLU</span>):</span></span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">        obs_dim = observation_space.shape[<span class="number">0</span>]</span><br><span class="line">        act_dim = action_space.shape[<span class="number">0</span>]</span><br><span class="line">        act_limit = action_space.high[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># build policy and value functions</span></span><br><span class="line">        self.pi = MLPActor(obs_dim, act_dim, hidden_sizes, activation, act_limit)</span><br><span class="line">        self.q = MLPQFunction(obs_dim, act_dim, hidden_sizes, activation)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">act</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="keyword">return</span> self.pi(obs).numpy()</span><br></pre></td></tr></table></figure>
+<p>理由：</p>
+<ul>
+<li>即使通过PG学习得到了随机策略之后，在每一步行为时，我们还需要对得到的最优策略概率分布进行采样，才能获得action的具体值；而action通常是高维的向量，比如25维、50维，在高维的action空间的频繁采样，无疑是很耗费计算能力的；</li>
+<li>在PG的学习过程中，每一步计算policy gradient都需要在整个action space进行积分。</li>
+</ul>
+<h1 id="DPG到DDPG"><a href="#DPG到DDPG" class="headerlink" title="DPG到DDPG"></a>DPG到DDPG</h1><p>使用卷积神经网络来模拟策略函数和Q函数，并用深度学习的方法来训练，证明了在RL方法中，非线性模拟函数的准确性和高性能、可收敛；</p>
+<p>而DPG中，可以看成使用线性回归的机器学习方法：使用带参数的线性函数来模拟策略函数和Q函数，然后使用线性回归的方法进行训练。</p>
+<p>experience replay memory的使用：actor同环境交互时，产生的transition数据序列是在时间上高度关联(correlated)的，如果这些数据序列直接用于训练，会导致神经网络的overfit，不易收敛。</p>
+<p>DDPG的actor将transition数据先存入experience replay buffer, 然后在训练时，从experience replay buffer中随机采样mini-batch数据，这样采样得到的数据可以认为是无关联的。</p>
+<p>target 网络和online 网络的使用， 使的学习过程更加稳定，收敛更有保障。</p>
+<h2 id="实现框架"><a href="#实现框架" class="headerlink" title="实现框架"></a>实现框架</h2><p><img src="/2021/01/03/DDPG/Framework.PNG" alt="framwork"></p>
+<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p><img src="/2021/01/03/DDPG/Algorithm.PNG" alt="algorithm"></p>
+<h2 id="Exploration"><a href="#Exploration" class="headerlink" title="Exploration"></a>Exploration</h2><p>DDPG以非策略的方式训练确定性策略。因为策略是确定的，如果agent要探索on-policy，在一开始它可能不会尝试足够广泛的行动来找到有用的学习信号。为了使DDPG政策更好地探索，我们在训练时为他们的行动添加噪音。原始DDPG论文的作者推荐了时间相关的OU噪声，但最近的结果表明，不相关、均值为零的高斯噪声工作得很好。因为后者更简单，所以更可取。为了便于获得高质量的训练数据，您可以在训练过程中减少噪声的规模。(我们在实现中没有这样做，并始终保持噪声规模固定。)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_action</span>(<span class="params">o, noise_scale</span>):</span></span><br><span class="line">        a = ac.act(torch.as_tensor(o, dtype=torch.float32))</span><br><span class="line">        a += noise_scale * np.random.randn(act_dim)</span><br><span class="line">        <span class="keyword">return</span> np.clip(a, -act_limit, act_limit)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Twin Delayed DDPG (TD3)</title>
+    <url>/2021/01/10/Twin%20Delayed%20DDPG%20(TD3)/</url>
+    <content><![CDATA[<h1 id><a href="#" class="headerlink" title="#"></a>#</h1>]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
+      </tags>
+  </entry>
+</search>
