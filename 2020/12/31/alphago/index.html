@@ -11,10 +11,9 @@
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Sunrisulfr,"> 
     <meta name="description" content="了解AlphaGO
-
 选出好棋-增强学习Reinforcement Learning
 模仿学习增强学习
-“手下一步棋，心想三步棋”-蒙特卡罗树MCTS围棋问题实际上是一个树的搜索问题，当前局面是树的,"> 
+“手下一步棋，心想三步棋”-蒙特卡罗树MCTS围棋问题实际上是一个树的搜索问题，当前局面是树的根,"> 
     <meta name="author" content="Sunrisulfr"> 
     <link rel="alternative" href="atom.xml" title="Sunrisulfr的菠萝屋" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -69,7 +68,6 @@
         </div>
         <div class="content markdown">
             <h1 id="了解AlphaGO"><a href="#了解AlphaGO" class="headerlink" title="了解AlphaGO"></a>了解AlphaGO</h1><!-- ![Ray_head_logo](AlphaGO/AlphaGo.jpg) -->
-
 <h2 id="选出好棋-增强学习Reinforcement-Learning"><a href="#选出好棋-增强学习Reinforcement-Learning" class="headerlink" title="选出好棋-增强学习Reinforcement Learning"></a>选出好棋-增强学习Reinforcement Learning</h2><p><img src="/2020/12/31/alphago/Network.PNG" alt="Network"></p>
 <h3 id="模仿学习"><a href="#模仿学习" class="headerlink" title="模仿学习"></a>模仿学习</h3><h3 id="增强学习"><a href="#增强学习" class="headerlink" title="增强学习"></a>增强学习</h3><p><img src="/2020/12/31/alphago/RL.PNG" alt="RL"></p>
 <h2 id="“手下一步棋，心想三步棋”-蒙特卡罗树MCTS"><a href="#“手下一步棋，心想三步棋”-蒙特卡罗树MCTS" class="headerlink" title="“手下一步棋，心想三步棋”-蒙特卡罗树MCTS"></a>“手下一步棋，心想三步棋”-蒙特卡罗树MCTS</h2><p>围棋问题实际上是一个树的搜索问题，当前局面是树的根，树根有多少分支，对应着下一步有多少对应的落子，这是树的宽度。之后树不断的生长（推演，模拟），直到叶子节点（开始落子）。从树根到叶子节点，分了多少次枝就是树的深度。树的广度越宽，深度越深，搜索所需要的时间越长。如：围棋一共361个交叉点，越往后，可以落子的位子越少，所以平均下来树的宽度大约为250，深度大约150.如果想遍历整个围棋树，需要搜索250的150次方。所以走一步前，需要搜索折磨多次数是不切实际的。</p>

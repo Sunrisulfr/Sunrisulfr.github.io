@@ -82,7 +82,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 <p>最后:通过最大化$Q_{\phi_1}$来学习策略:</p>
 <script type="math/tex; mode=display">
 \max_{\theta} \mathop{E}\limits_{s \sim {\mathcal D}}\left[ Q_{\phi_1}(s, \mu_{\theta}(s)) \right]</script><p>这和DDPG几乎没有什么区别。然而，在TD3中，策略的更新频率低于q函数。这有助于抑制DDPG中由于策略更新更改目标的方式而出现的波动性。</p>
-<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><p><img src="/2021/01/10/Twin%20Delayed%20DDPG%20(TD3)/TD3Algorithm.png" alt="Algorithm"></p>
+<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><p><img src="/2021/01/10/TD3/TD3Algorithm.png" alt="Algorithm"></p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
