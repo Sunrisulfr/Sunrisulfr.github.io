@@ -198,4 +198,17 @@ Q^{\pi}(s,a) = \mathop{\text{E}}\limits_{s' \sim P,  a' \sim \pi}{R(s,a,s') + \g
         <tag>off-policy</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Generative Adversarial Imitation Learning (GAIL)</title>
+    <url>/2022/01/03/GAIL/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>论文：<a href="https://arxiv.org/abs/1606.03476">https://arxiv.org/abs/1606.03476</a><br>本文要解决的是Imitation Learning和Inverse RL。基本思想比较简单，利用GAN的对抗训练来生成给定的专家数据分布。为什么要用GAN，作者提出，一般Imitation Learning传统的Behavioral Cloning的方法存在状态漂移的问题，一旦遇到没有在专家轨迹中出现的状态将会产生很大的误差以及累计误差；此外，Inverse RL逆强化学习的方法把强化学习的学习过程套在求解cost function的过程中，因此效率很低；然后，逆强化学习只学到的cost function只是解释了专家轨迹，但没有学习到策略，而利用GAIL可以直接显式的得到决策，更高效。</p>
+<p>GAIL的核心在于，尽管使用了对抗的思想，但并没有显式的Generator在其中，充当Generator作用的是智能体的Policy。GAIL的学习大致分为两步，第一步通过当前policy采样得到的数据与专家数据进行对抗训练来训练Discriminator；然后，利用Discriminator作为surrogate reward function来训练策略Policy，文章使用的TRPO。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
+      </tags>
+  </entry>
 </search>
