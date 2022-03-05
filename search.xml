@@ -30,6 +30,71 @@
       </tags>
   </entry>
   <entry>
+    <title>Generative Adversarial Imitation Learning (GAIL)</title>
+    <url>/2022/01/03/GAIL/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>论文：<a href="https://arxiv.org/abs/1606.03476">https://arxiv.org/abs/1606.03476</a><br>本文要解决的是Imitation Learning和Inverse RL。基本思想比较简单，利用GAN的对抗训练来生成给定的专家数据分布。为什么要用GAN，作者提出，一般Imitation Learning传统的Behavioral Cloning的方法存在状态漂移的问题，一旦遇到没有在专家轨迹中出现的状态将会产生很大的误差以及累计误差；此外，Inverse RL逆强化学习的方法把强化学习的学习过程套在求解cost function的过程中，因此效率很低；然后，逆强化学习只学到的cost function只是解释了专家轨迹，但没有学习到策略，而利用GAIL可以直接显式的得到决策，更高效。</p>
+<p>GAIL的核心在于，尽管使用了对抗的思想，但并没有显式的Generator在其中，充当Generator作用的是智能体的Policy。GAIL的学习大致分为两步，第一步通过当前policy采样得到的数据与专家数据进行对抗训练来训练Discriminator；然后，利用Discriminator作为surrogate reward function来训练策略Policy，文章使用的TRPO。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Leetcode 日记：剑指offer篇</title>
+    <url>/2020/12/31/Leetcode/</url>
+    <content><![CDATA[<p>我真的不想刷题！！ T_T</p>
+<h1 id="剑指-Offer-33-二叉搜索树的后序遍历序列"><a href="#剑指-Offer-33-二叉搜索树的后序遍历序列" class="headerlink" title="剑指 Offer 33. 二叉搜索树的后序遍历序列"></a>剑指 Offer 33. 二叉搜索树的后序遍历序列</h1><h2 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h2><p>输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。</p>
+<p>参考以下这颗二叉搜索树：</p>
+<pre><code>    5
+   / \
+  2   6
+ / \
+1   3
+</code></pre><p>示例 1：</p>
+<p>输入: [1,6,3,2,5]<br>输出: false</p>
+<p>示例 2：</p>
+<p>输入: [1,3,2,6,5]<br>输出: true</p>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="comment">// 单调栈</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">verifyPostorder</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">        <span class="keyword">int</span> root = INT_MAX;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = postorder.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(postorder[i] &gt; root)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(!s.empty() &amp;&amp; postorder[i] &lt; s.top())&#123;</span><br><span class="line">                root = s.top();</span><br><span class="line">                s.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(postorder[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>题</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Soft Actor Critic (SAC)</title>
+    <url>/2021/01/20/SAC/</url>
+    <content><![CDATA[<p>SAC (Soft Actor Critic)是一种对随机策略进行非策略优化的算法，在随机策略优化和ddpg方法之间架起了一座桥梁。它并不是TD3的直接继承者(几乎是同时发布的)，但它包含了短双q技巧，并且由于SAC政策的固有随机性，它也最终受益于目标政策平滑之类的东西。</p>
+<p>SAC的一个中心特征是熵正则化。该策略被训练成最大化期望收益和熵之间的权衡，熵是该策略中随机性的度量。这与探索-利用的权衡关系密切:熵的增加会导致更多的探索，从而加速以后的学习。它还可以防止策略过早地收敛到一个坏的局部最优。</p>
+<h1 id="Entropy-Regularized-Reinforcement-Learning"><a href="#Entropy-Regularized-Reinforcement-Learning" class="headerlink" title="Entropy-Regularized Reinforcement Learning"></a>Entropy-Regularized Reinforcement Learning</h1><p>Entropy is a quantity which, roughly speaking, says how random a random variable is. If a coin is weighted so that it almost always comes up heads, it has low entropy; if it’s evenly weighted and has a half chance of either outcome, it has high entropy.</p>
+<p>Let x be a random variable with probability mass or density function P. The entropy H of x is computed from its distribution P according to</p>
+<script type="math/tex; mode=display">
+H(P) = \mathop{\text{E}}\limits_{x\sim P}[-\log P(x)].</script><p>在熵正则化强化学习中，agent在每个时间步上获得的奖励与策略在该时间步上的熵成正比。这将RL问题改变为:</p>
+<script type="math/tex; mode=display">
+\pi^* = \arg \max_{\pi} \mathop{\text{E}}\limits_{\tau \sim \pi}{ \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg)},</script><p>其中$\alpha &gt; 0$是权衡系数。(注意:我们在这里假设一个无限视界贴现设置，我们将在本页面的其余部分做同样的事情。)现在我们可以在这个设置中定义稍微不同的值函数。$V^{\pi}$被修改为包含每个时间步的熵加成:</p>
+<script type="math/tex; mode=display">V^{\pi}(s) = \mathop{\text{E}}\limits_{\tau \sim \pi} \Bigg [ \left. \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg) \right| s_0 = s \Bigg ]</script><p>$Q^{\pi}$被修改为包含除了第一个时间步之外的每个时间步的熵奖励:</p>
+<script type="math/tex; mode=display">Q^{\pi}(s,a) = \mathop{\text{E}}\limits_{\tau \sim \pi}{ \Bigg [\left. \sum_{t=0}^{\infty} \gamma^t  R(s_t, a_t, s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H\left(\pi(\cdot|s_t)\right)\right| s_0 = s, a_0 = a}\Bigg ]</script><p>有了这些定义，$V^{\pi}$和$Q^{\pi}$之间是这样连接的:</p>
+<script type="math/tex; mode=display">
+V^\pi(s) = \mathop{\text{E}}\limits_{a \sim \pi}[Q^\pi(s,a)] + \alpha H(\pi(\cdot | s))</script><p>$Q^{\pi}$的Bellman方程为:</p>
+<script type="math/tex; mode=display">
+Q^{\pi}(s,a) = \mathop{\text{E}}\limits_{s' \sim P,  a' \sim \pi}{R(s,a,s') + \gamma\left(Q^{\pi}(s',a') + \alpha H\left(\pi(\cdot|s')\right) \right)} \\
+= \mathop{\text{E}}\limits_{s' \sim P}{R(s,a,s') + \gamma V^{\pi}(s')}.</script><h1 id="Soft-Actor-critic"><a href="#Soft-Actor-critic" class="headerlink" title="Soft Actor-critic"></a>Soft Actor-critic</h1><p>SAC同时学习一个策略$pi<em>{\ θ}$和两个$q$函数$Q</em>{\phi<em>1}$，$Q</em>{\phi_2}$。目前标准的SAC有两种变体:一种使用固定的熵正则化系数$\alpha$，另一种通过在培训过程中改变$\alpha$来强制熵约束。</p>
+<h1 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h1><p><img src="/2021/01/20/SAC/Algorithm.svg" alt="algorithm"></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
+        <tag>off-policy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Twin Delayed DDPG (TD3)</title>
     <url>/2021/01/10/TD3/</url>
     <content><![CDATA[<p>虽然DDPG有时可以获得很好的性能，但对于超参数和其他类型的调优，它经常是脆弱的。DDPG最常见的失效模式是学习后的q函数开始大幅高估q值，从而导致策略失效，因为它利用了q函数中的错误。Twin Delayed DDPG (TD3)是一种通过引入三个关键技巧来解决这个问题的算法:</p>
@@ -86,23 +151,6 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
       <tags>
         <tag>强化学习</tag>
         <tag>MCTS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ray.Tune初探（二）：Guide</title>
-    <url>/2020/12/03/ray2/</url>
-    <content><![CDATA[<h1 id="Tune：使用指南"><a href="#Tune：使用指南" class="headerlink" title="Tune：使用指南"></a>Tune：使用指南</h1><h2 id="资源-Parallelism-GPUs-Distributed"><a href="#资源-Parallelism-GPUs-Distributed" class="headerlink" title="资源 (Parallelism, GPUs, Distributed)"></a>资源 (Parallelism, GPUs, Distributed)</h2><p>Parallelism is determined by <code>resources_per_trial</code> (defaulting to 1 CPU, 0 GPU per trial) and the resources available to Tune (<code>ray.cluster_resources()</code>).</p>
-<p>By default, Tune automatically runs N concurrent trials, where N is the number of CPUs (cores) on your machine.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 4 concurrent trials at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
-<p>You can override this parallelism with <code>resources_per_trial</code>. Here you can specify your resource requests using either a dictionary or a PlacementGroupFactory object. In any case, Ray Tune will try to start a placement group for each trial.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 2 concurrent trials at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">2</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 1 trial at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fractional values are also supported, (i.e., &#123;&quot;cpu&quot;: 0.5&#125;).</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">0.5</span>&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="搜索空间-Grid-Random"><a href="#搜索空间-Grid-Random" class="headerlink" title="搜索空间 (Grid/Random)"></a>搜索空间 (Grid/Random)</h2><h2 id><a href="#" class="headerlink" title=" "></a> </h2>]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>Ray</tag>
-        <tag>分布式</tag>
       </tags>
   </entry>
   <entry>
@@ -171,68 +219,20 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
       </tags>
   </entry>
   <entry>
-    <title>Soft Actor Critic (SAC)</title>
-    <url>/2021/01/20/SAC/</url>
-    <content><![CDATA[<p>SAC (Soft Actor Critic)是一种对随机策略进行非策略优化的算法，在随机策略优化和ddpg方法之间架起了一座桥梁。它并不是TD3的直接继承者(几乎是同时发布的)，但它包含了短双q技巧，并且由于SAC政策的固有随机性，它也最终受益于目标政策平滑之类的东西。</p>
-<p>SAC的一个中心特征是熵正则化。该策略被训练成最大化期望收益和熵之间的权衡，熵是该策略中随机性的度量。这与探索-利用的权衡关系密切:熵的增加会导致更多的探索，从而加速以后的学习。它还可以防止策略过早地收敛到一个坏的局部最优。</p>
-<h1 id="Entropy-Regularized-Reinforcement-Learning"><a href="#Entropy-Regularized-Reinforcement-Learning" class="headerlink" title="Entropy-Regularized Reinforcement Learning"></a>Entropy-Regularized Reinforcement Learning</h1><p>Entropy is a quantity which, roughly speaking, says how random a random variable is. If a coin is weighted so that it almost always comes up heads, it has low entropy; if it’s evenly weighted and has a half chance of either outcome, it has high entropy.</p>
-<p>Let x be a random variable with probability mass or density function P. The entropy H of x is computed from its distribution P according to</p>
-<script type="math/tex; mode=display">
-H(P) = \mathop{\text{E}}\limits_{x\sim P}[-\log P(x)].</script><p>在熵正则化强化学习中，agent在每个时间步上获得的奖励与策略在该时间步上的熵成正比。这将RL问题改变为:</p>
-<script type="math/tex; mode=display">
-\pi^* = \arg \max_{\pi} \mathop{\text{E}}\limits_{\tau \sim \pi}{ \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg)},</script><p>其中$\alpha &gt; 0$是权衡系数。(注意:我们在这里假设一个无限视界贴现设置，我们将在本页面的其余部分做同样的事情。)现在我们可以在这个设置中定义稍微不同的值函数。$V^{\pi}$被修改为包含每个时间步的熵加成:</p>
-<script type="math/tex; mode=display">V^{\pi}(s) = \mathop{\text{E}}\limits_{\tau \sim \pi} \Bigg [ \left. \sum_{t=0}^{\infty} \gamma^t \bigg( R(s_t, a_t, s_{t+1}) + \alpha H\left(\pi(\cdot|s_t)\right) \bigg) \right| s_0 = s \Bigg ]</script><p>$Q^{\pi}$被修改为包含除了第一个时间步之外的每个时间步的熵奖励:</p>
-<script type="math/tex; mode=display">Q^{\pi}(s,a) = \mathop{\text{E}}\limits_{\tau \sim \pi}{ \Bigg [\left. \sum_{t=0}^{\infty} \gamma^t  R(s_t, a_t, s_{t+1}) + \alpha \sum_{t=1}^{\infty} \gamma^t H\left(\pi(\cdot|s_t)\right)\right| s_0 = s, a_0 = a}\Bigg ]</script><p>有了这些定义，$V^{\pi}$和$Q^{\pi}$之间是这样连接的:</p>
-<script type="math/tex; mode=display">
-V^\pi(s) = \mathop{\text{E}}\limits_{a \sim \pi}[Q^\pi(s,a)] + \alpha H(\pi(\cdot | s))</script><p>$Q^{\pi}$的Bellman方程为:</p>
-<script type="math/tex; mode=display">
-Q^{\pi}(s,a) = \mathop{\text{E}}\limits_{s' \sim P,  a' \sim \pi}{R(s,a,s') + \gamma\left(Q^{\pi}(s',a') + \alpha H\left(\pi(\cdot|s')\right) \right)} \\
-= \mathop{\text{E}}\limits_{s' \sim P}{R(s,a,s') + \gamma V^{\pi}(s')}.</script><h1 id="Soft-Actor-critic"><a href="#Soft-Actor-critic" class="headerlink" title="Soft Actor-critic"></a>Soft Actor-critic</h1><p>SAC同时学习一个策略$pi<em>{\ θ}$和两个$q$函数$Q</em>{\phi<em>1}$，$Q</em>{\phi_2}$。目前标准的SAC有两种变体:一种使用固定的熵正则化系数$\alpha$，另一种通过在培训过程中改变$\alpha$来强制熵约束。</p>
-<h1 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h1><p><img src="/2021/01/20/SAC/Algorithm.svg" alt="algorithm"></p>
-]]></content>
+    <title>Ray.Tune初探（二）：Guide</title>
+    <url>/2020/12/03/ray2/</url>
+    <content><![CDATA[<h1 id="Tune：使用指南"><a href="#Tune：使用指南" class="headerlink" title="Tune：使用指南"></a>Tune：使用指南</h1><h2 id="资源-Parallelism-GPUs-Distributed"><a href="#资源-Parallelism-GPUs-Distributed" class="headerlink" title="资源 (Parallelism, GPUs, Distributed)"></a>资源 (Parallelism, GPUs, Distributed)</h2><p>Parallelism is determined by <code>resources_per_trial</code> (defaulting to 1 CPU, 0 GPU per trial) and the resources available to Tune (<code>ray.cluster_resources()</code>).</p>
+<p>By default, Tune automatically runs N concurrent trials, where N is the number of CPUs (cores) on your machine.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 4 concurrent trials at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<p>You can override this parallelism with <code>resources_per_trial</code>. Here you can specify your resource requests using either a dictionary or a PlacementGroupFactory object. In any case, Ray Tune will try to start a placement group for each trial.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 2 concurrent trials at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">2</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># If you have 4 CPUs on your machine, this will run 1 trial at a time.</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fractional values are also supported, (i.e., &#123;&quot;cpu&quot;: 0.5&#125;).</span></span><br><span class="line">tune.run(trainable, num_samples=<span class="number">10</span>, resources_per_trial=&#123;<span class="string">&quot;cpu&quot;</span>: <span class="number">0.5</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="搜索空间-Grid-Random"><a href="#搜索空间-Grid-Random" class="headerlink" title="搜索空间 (Grid/Random)"></a>搜索空间 (Grid/Random)</h2><h2 id><a href="#" class="headerlink" title=" "></a> </h2>]]></content>
       <categories>
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>强化学习</tag>
-        <tag>off-policy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Generative Adversarial Imitation Learning (GAIL)</title>
-    <url>/2022/01/03/GAIL/</url>
-    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>论文：<a href="https://arxiv.org/abs/1606.03476">https://arxiv.org/abs/1606.03476</a><br>本文要解决的是Imitation Learning和Inverse RL。基本思想比较简单，利用GAN的对抗训练来生成给定的专家数据分布。为什么要用GAN，作者提出，一般Imitation Learning传统的Behavioral Cloning的方法存在状态漂移的问题，一旦遇到没有在专家轨迹中出现的状态将会产生很大的误差以及累计误差；此外，Inverse RL逆强化学习的方法把强化学习的学习过程套在求解cost function的过程中，因此效率很低；然后，逆强化学习只学到的cost function只是解释了专家轨迹，但没有学习到策略，而利用GAIL可以直接显式的得到决策，更高效。</p>
-<p>GAIL的核心在于，尽管使用了对抗的思想，但并没有显式的Generator在其中，充当Generator作用的是智能体的Policy。GAIL的学习大致分为两步，第一步通过当前policy采样得到的数据与专家数据进行对抗训练来训练Discriminator；然后，利用Discriminator作为surrogate reward function来训练策略Policy，文章使用的TRPO。</p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>强化学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Leetcode 日记：剑指offer篇</title>
-    <url>/2020/12/31/Leetcode/</url>
-    <content><![CDATA[<p>我真的不想刷题！！ T_T</p>
-<h1 id="剑指-Offer-33-二叉搜索树的后序遍历序列"><a href="#剑指-Offer-33-二叉搜索树的后序遍历序列" class="headerlink" title="剑指 Offer 33. 二叉搜索树的后序遍历序列"></a>剑指 Offer 33. 二叉搜索树的后序遍历序列</h1><h2 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h2><p>输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。</p>
-<p>参考以下这颗二叉搜索树：</p>
-<pre><code>    5
-   / \
-  2   6
- / \
-1   3
-</code></pre><p>示例 1：</p>
-<p>输入: [1,6,3,2,5]<br>输出: false</p>
-<p>示例 2：</p>
-<p>输入: [1,3,2,6,5]<br>输出: true</p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="comment">// 单调栈</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">verifyPostorder</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">        <span class="keyword">int</span> root = INT_MAX;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = postorder.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(postorder[i] &gt; root)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(!s.empty() &amp;&amp; postorder[i] &lt; s.top())&#123;</span><br><span class="line">                root = s.top();</span><br><span class="line">                s.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(postorder[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>题</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
+        <tag>Ray</tag>
+        <tag>分布式</tag>
       </tags>
   </entry>
 </search>
