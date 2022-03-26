@@ -44,7 +44,7 @@
   </entry>
   <entry>
     <title>Leetcode 日记：剑指offer篇</title>
-    <url>/2020/12/31/Leetcode/</url>
+    <url>/2022/03/01/Leetcode/</url>
     <content><![CDATA[<p>我真的不想刷题！！ T_T</p>
 <h1 id="剑指-Offer-33-二叉搜索树的后序遍历序列"><a href="#剑指-Offer-33-二叉搜索树的后序遍历序列" class="headerlink" title="剑指 Offer 33. 二叉搜索树的后序遍历序列"></a>剑指 Offer 33. 二叉搜索树的后序遍历序列</h1><h2 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h2><p>输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。</p>
 <p>参考以下这颗二叉搜索树：</p>
@@ -58,6 +58,8 @@
 <p>示例 2：</p>
 <p>输入: [1,3,2,6,5]<br>输出: true</p>
 <h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="comment">// 单调栈</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">verifyPostorder</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">        <span class="keyword">int</span> root = INT_MAX;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = postorder.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(postorder[i] &gt; root)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(!s.empty() &amp;&amp; postorder[i] &lt; s.top())&#123;</span><br><span class="line">                root = s.top();</span><br><span class="line">                s.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(postorder[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="剑指-Offer-36-二叉搜索树与双向链表"><a href="#剑指-Offer-36-二叉搜索树与双向链表" class="headerlink" title="剑指 Offer 36. 二叉搜索树与双向链表"></a>剑指 Offer 36. 二叉搜索树与双向链表</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。</p>
+<p>code<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Node *pre = <span class="literal">nullptr</span>, *head = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(Node* root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span>;</span><br><span class="line">        dfs(root -&gt; left);</span><br><span class="line">        <span class="keyword">if</span> (pre) pre-&gt;right = root;</span><br><span class="line">        <span class="keyword">else</span> head = root; <span class="comment">// 保存链表头结点</span></span><br><span class="line">        root-&gt;left = pre; </span><br><span class="line">        pre = root;</span><br><span class="line">        dfs(root-&gt;right); <span class="comment">//右子树</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">Node* <span class="title">treeToDoublyList</span><span class="params">(Node* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> root;</span><br><span class="line">        dfs(root);</span><br><span class="line">        head-&gt;left = pre;</span><br><span class="line">        pre-&gt;right = head;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 ]]></content>
       <categories>
         <category>题</category>
@@ -233,6 +235,243 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
       <tags>
         <tag>Ray</tag>
         <tag>分布式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Soft Actor Critic (SAC)</title>
+    <url>/2021/01/20/ML1/</url>
+    <content><![CDATA[<ul>
+<li><a href="#偏差与方差">偏差与方差</a><ul>
+<li><a href="#导致偏差和方差的原因">导致偏差和方差的原因</a></li>
+<li><a href="#深度学习中的偏差与方差">深度学习中的偏差与方差</a></li>
+<li><a href="#偏差方差-与-boostingbagging">偏差/方差 与 Boosting/Bagging</a></li>
+<li><a href="#偏差与方差的计算公式">偏差与方差的计算公式</a></li>
+<li><a href="#偏差与方差的权衡过拟合与模型复杂度的权衡">偏差与方差的权衡（过拟合与模型复杂度的权衡）</a></li>
+</ul>
+</li>
+<li><a href="#生成模型与判别模型">生成模型与判别模型</a></li>
+<li><a href="#先验概率与后验概率">先验概率与后验概率</a></li>
+</ul>
+<!-- /TOC -->
+<h2 id="偏差与方差"><a href="#偏差与方差" class="headerlink" title="偏差与方差"></a>偏差与方差</h2><blockquote>
+<p>《机器学习》 2.5 偏差与方差 - 周志华</p>
+<ul>
+<li><strong>偏差</strong>与<strong>方差</strong>分别是用于衡量一个模型<strong>泛化误差</strong>的两个方面；<ul>
+<li>模型的<strong>偏差</strong>，指的是模型预测的<strong>期望值</strong>与<strong>真实值</strong>之间的差；</li>
+<li>模型的<strong>方差</strong>，指的是模型预测的<strong>期望值</strong>与<strong>预测值</strong>之间的差平方和；</li>
+</ul>
+</li>
+<li>在<strong>监督学习</strong>中，模型的<strong>泛化误差</strong>可<strong>分解</strong>为偏差、方差与噪声之和。<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817204652.png" height></div>
+
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>偏差</strong>用于描述模型的<strong>拟合能力</strong>；<br><br><strong>方差</strong>用于描述模型的<strong>稳定性</strong>。<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817192259.png" height></div>
+
+</li>
+</ul>
+<h3 id="导致偏差和方差的原因"><a href="#导致偏差和方差的原因" class="headerlink" title="导致偏差和方差的原因"></a>导致偏差和方差的原因</h3><ul>
+<li><strong>偏差</strong>通常是由于我们对学习算法做了<strong>错误的假设</strong>，或者模型的复杂度不够；<ul>
+<li>比如真实模型是一个二次函数，而我们假设模型为一次函数，这就会导致偏差的增大（欠拟合）；</li>
+<li><strong>由偏差引起的误差</strong>通常在<strong>训练误差</strong>上就能体现，或者说训练误差主要是由偏差造成的</li>
+</ul>
+</li>
+<li><strong>方差</strong>通常是由于<strong>模型的复杂度相对于训练集过高</strong>导致的；<ul>
+<li>比如真实模型是一个简单的二次函数，而我们假设模型是一个高次函数，这就会导致方差的增大（过拟合）；</li>
+<li><strong>由方差引起的误差</strong>通常体现在测试误差相对训练误差的<strong>增量</strong>上。</li>
+</ul>
+</li>
+</ul>
+<h3 id="深度学习中的偏差与方差"><a href="#深度学习中的偏差与方差" class="headerlink" title="深度学习中的偏差与方差"></a>深度学习中的偏差与方差</h3><ul>
+<li>神经网络的拟合能力非常强，因此它的<strong>训练误差</strong>（偏差）通常较小；</li>
+<li>但是过强的拟合能力会导致较大的方差，使模型的测试误差（<strong>泛化误差</strong>）增大；</li>
+<li>因此深度学习的核心工作之一就是研究如何降低模型的泛化误差，这类方法统称为<strong>正则化方法</strong>。<blockquote>
+<p>../深度学习/<a href="../A-深度学习/C-专题-正则化">正则化</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="偏差-方差-与-Boosting-Bagging"><a href="#偏差-方差-与-Boosting-Bagging" class="headerlink" title="偏差/方差 与 Boosting/Bagging"></a>偏差/方差 与 Boosting/Bagging</h3><blockquote>
+<p>./集成学习专题/<a href="./C-专题-集成学习#boostingbagging-与-偏差方差-的关系">Boosting/Bagging 与 偏差/方差 的关系</a></p>
+</blockquote>
+<h3 id="偏差与方差的计算公式"><a href="#偏差与方差的计算公式" class="headerlink" title="偏差与方差的计算公式"></a>偏差与方差的计算公式</h3><ul>
+<li><p>记在<strong>训练集 D</strong> 上学得的模型为</p>
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=f(\boldsymbol{x};D)"><img src="/2021/01/20/ML1/_assets/公式_20180817211749.png" height></a></div>
+
+<p>模型的<strong>期望预测</strong>为</p>
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;\hat{f}(\boldsymbol{x})=\mathbb{E}_D[f(\boldsymbol{x};D)]"><img src="/2021/01/20/ML1/公式_20180817210758.png" height></a></div>
+</li>
+<li><p><strong>偏差</strong>（Bias）</p>
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;bias^2(\boldsymbol{x})=(\hat{f}(\boldsymbol{x})-y)^2"><img src="/2021/01/20/ML1/公式_20180817210106.png" height></a></div>
+
+<blockquote>
+<p><strong>偏差</strong>度量了学习算法的期望预测与真实结果的偏离程度，即刻画了学习算法本身的拟合能力；</p>
+</blockquote>
+</li>
+<li><p><strong>方差</strong>（Variance）</p>
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;var(\boldsymbol{x})=\mathbb{E}_D\left&space;[&space;\left&space;(&space;f(\boldsymbol{x};D)-\hat{f}(\boldsymbol{x})&space;\right&space;)^2&space;\right&space;]"><img src="/2021/01/20/ML1/公式_20180817211903.png" height></a></div>
+
+<blockquote>
+<p><strong>方差</strong>度量了同样大小的<strong>训练集的变动</strong>所导致的学习性能的变化，即刻画了数据扰动所造成的影响（模型的稳定性）；</p>
+<!-- - **噪声**
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;var(\boldsymbol{x})=\mathbb{E}_D\left&space;[&space;\left&space;(&space;f(\boldsymbol{x};D)-\hat{f}(\boldsymbol{x})&space;\right&space;)^2&space;\right&space;]"><img src="../_assets/公式_20180817212111.png" height="" /></a></div> -->
+</blockquote>
+</li>
+<li><p><strong>噪声</strong>则表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界，即刻画了学习问题本身的难度。</p>
+</li>
+<li><p>“<strong>偏差-方差分解</strong>”表明模型的泛化能力是由算法的能力、数据的充分性、任务本身的难度共同决定的。</p>
+</li>
+</ul>
+<h3 id="偏差与方差的权衡（过拟合与模型复杂度的权衡）"><a href="#偏差与方差的权衡（过拟合与模型复杂度的权衡）" class="headerlink" title="偏差与方差的权衡（过拟合与模型复杂度的权衡）"></a>偏差与方差的权衡（过拟合与模型复杂度的权衡）</h3><ul>
+<li><p>给定学习任务，</p>
+<ul>
+<li>当训练不足时，模型的<strong>拟合能力不够</strong>（数据的扰动不足以使模型产生显著的变化），此时<strong>偏差</strong>主导模型的泛化误差；</li>
+<li>随着训练的进行，模型的<strong>拟合能力增强</strong>（模型能够学习数据发生的扰动），此时<strong>方差</strong>逐渐主导模型的泛化误差；</li>
+<li>当训练充足后，模型的<strong>拟合能力过强</strong>（数据的轻微扰动都会导致模型产生显著的变化），此时即发生<strong>过拟合</strong>（训练数据自身的、非全局的特征也被模型学习了）</li>
+</ul>
+</li>
+<li><p>偏差和方差的关系和<strong>模型容量</strong>（模型复杂度）、<strong>欠拟合</strong>和<strong>过拟合</strong>的概念紧密相联</p>
+<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817214034.png" height></div>
+
+<ul>
+<li>当模型的容量增大（x 轴）时， 偏差（用点表示）随之减小，而方差（虚线）随之增大</li>
+<li>沿着 x 轴存在<strong>最佳容量</strong>，<strong>小于最佳容量会呈现欠拟合</strong>，<strong>大于最佳容量会导致过拟合</strong>。<blockquote>
+<p>《深度学习》 5.4.4 权衡偏差和方差以最小化均方误差</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Reference</strong></p>
+<ul>
+<li><a href="http://scott.fortmann-roe.com/docs/BiasVariance.html">Understanding the Bias-Variance Tradeoff</a></li>
+<li><a href="https://www.zhihu.com/question/27068705">机器学习中的Bias(偏差)，Error(误差)，和Variance(方差)有什么区别和联系？</a> - 知乎 </li>
+</ul>
+<h2 id="生成模型与判别模型"><a href="#生成模型与判别模型" class="headerlink" title="生成模型与判别模型"></a>生成模型与判别模型</h2><blockquote>
+<p>《统计学习方法》 1.7 生成模型与判别模型</p>
+<ul>
+<li>监督学习的任务是学习一个模型，对给定的输入预测相应的输出</li>
+<li>这个模型的一般形式为一个<strong>决策函数</strong>或一个<strong>条件概率分布</strong>（后验概率）：<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;Y=f(X)\quad&space;\text{or}\quad&space;P(Y|X)"><img src="/2021/01/20/ML1/公式_20180817220004.png" height></a></div>
+
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>决策函数</strong>：输入 X 返回 Y；其中 Y 与一个<strong>阈值</strong>比较，然后根据比较结果判定 X 的类别</li>
+<li><strong>条件概率分布</strong>：输入 X 返回 <strong>X 属于每个类别的概率</strong>；将其中概率最大的作为 X 所属的类别<ul>
+<li>监督学习模型可分为<strong>生成模型</strong>与<strong>判别模型</strong></li>
+</ul>
+</li>
+<li><strong>判别模型</strong>直接学习决策函数或者条件概率分布<ul>
+<li>直观来说，<strong>判别模型</strong>学习的是类别之间的最优分隔面，反映的是不同类数据之间的差异</li>
+</ul>
+</li>
+<li><strong>生成模型</strong>学习的是联合概率分布<code>P(X,Y)</code>，然后根据条件概率公式计算 <code>P(Y|X)</code><div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X,Y)}{P(X)}"><img src="/2021/01/20/ML1/公式_20180817223923.png" height></a></div>
+
+</li>
+</ul>
+<p><strong>两者之间的联系</strong></p>
+<ul>
+<li>由生成模型可以得到判别模型，但由判别模型得不到生成模型。</li>
+<li>当存在“<strong>隐变量</strong>”时，只能使用<strong>生成模型</strong><blockquote>
+<p>隐变量：当我们找不到引起某一现象的原因时，就把这个在起作用，但无法确定的因素，叫“隐变量”</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>优缺点</strong></p>
+<ul>
+<li><strong>判别模型</strong><ul>
+<li>优点<ul>
+<li>直接面对预测，往往学习的准确率更高</li>
+<li>由于直接学习 <code>P(Y|X)</code> 或 <code>f(X)</code>，可以对数据进行各种程度的抽象，定义特征并使用特征，以简化学习过程</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>不能反映训练数据本身的特性</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>生成模型</strong><ul>
+<li>优点<ul>
+<li>可以还原出联合概率分布 <code>P(X,Y)</code>，判别方法不能</li>
+<li>学习收敛速度更快——即当样本容量增加时，学到的模型可以更快地收敛到真实模型</li>
+<li>当存在“隐变量”时，只能使用生成模型</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>学习和计算过程比较复杂</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>常见模型</strong></p>
+<ul>
+<li>判别模型<ul>
+<li>K 近邻、感知机（神经网络）、决策树、逻辑斯蒂回归、<strong>最大熵模型</strong>、SVM、提升方法、<strong>条件随机场</strong></li>
+</ul>
+</li>
+<li>生成模型<ul>
+<li>朴素贝叶斯、隐马尔可夫模型、混合高斯模型、贝叶斯网络、马尔可夫随机场</li>
+</ul>
+</li>
+</ul>
+<p><strong>Reference</strong></p>
+<ul>
+<li><a href="https://blog.csdn.net/u012101561/article/details/52814571">机器学习—-生成模型与判别模型</a> - CSDN博客 </li>
+<li></li>
+</ul>
+<h2 id="先验概率与后验概率"><a href="#先验概率与后验概率" class="headerlink" title="先验概率与后验概率"></a>先验概率与后验概率</h2><blockquote>
+<p><a href="https://blog.csdn.net/suranxu007/article/details/50326873">先验概率，后验概率，似然概率，条件概率，贝叶斯，最大似然</a> - CSDN博客 </p>
+</blockquote>
+<p><strong>条件概率</strong>（似然概率）</p>
+<ul>
+<li>一个事件发生后另一个事件发生的概率。</li>
+<li>一般的形式为 <code>P(X|Y)</code>，表示 y 发生的条件下 x 发生的概率。</li>
+<li>有时为了区分一般意义上的<strong>条件概率</strong>，也称<strong>似然概率</strong></li>
+</ul>
+<p><strong>先验概率</strong></p>
+<ul>
+<li>事件发生前的预判概率</li>
+<li>可以是基于历史数据的统计，可以由背景常识得出，也可以是人的主观观点给出。</li>
+<li>一般都是<strong>单独事件</strong>发生的概率，如 <code>P(A)</code>、<code>P(B)</code>。</li>
+</ul>
+<p><strong>后验概率</strong></p>
+<ul>
+<li>基于先验概率求得的<strong>反向条件概率</strong>，形式上与条件概率相同（若 <code>P(X|Y)</code> 为正向，则 <code>P(Y|X)</code> 为反向）</li>
+</ul>
+<p><strong>贝叶斯公式</strong><br>  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X|Y)*P(Y)}{P(X)}"><img src="/2021/01/20/ML1/公式_20180817230314.png" height></a></div></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>个性化推荐系统与强化学习</title>
+    <url>/2020/11/03/RLRe/</url>
+    <content><![CDATA[<p>通过融合深度学习与知识图谱技术，推荐系统的性能取得了大幅的提升。然而，多数的推荐系统仍是以一步到位的方式建立的：它们有着类似的搭建方式，即在充分获取用户历史数据的前提下，设计并训练特定的监督模型，从而得到用户对于不同物品的喜好程度。这些训练好的模型在部署上线后可以为特定用户识别出最具吸引力的物品，为其做出个性化推荐。在此，人们往往假设用户数据已充分获取，且其行为会在较长时间之内保持稳定，使得上述过程中所建立的推荐模型得以应付实际中的需求。</p>
+<p>然而对于诸多现实场景，例如电子商务或者在线新闻平台，用户与推荐系统之间往往会发生持续密切的交互行为。在这一过程中，用户的反馈将弥补可能的数据缺失，同时有力地揭示其当前的行为特征，从而为系统进行更加精准的个性化推荐提供重要的依据。</p>
+<p>强化学习为解决这个问题提供了有力支持。依照用户的行为特征，我们将涉及到的推荐场景划分为静态与动态，并分别对其进行讨论。</p>
+<h1 id="静态场景下的强化学习"><a href="#静态场景下的强化学习" class="headerlink" title="静态场景下的强化学习"></a>静态场景下的强化学习</h1><p>在静态场景之下，用户的行为特征在与系统的交互过程中保持稳定不变。对于这一场景，一类有代表性的工作是基于上下文多臂老虎机（contextual multi-armed bandit）的推荐系统，它的发展为克服推荐场景中的冷启动问题提供了行之有效的解决方案。</p>
+<p>在许多现实应用中，用户的历史行为往往服从特定的长尾分布，即大多数用户仅仅产生规模有限的历史数据，而极少的用户则会生成较为充足的历史数据。这一现象所带来的数据稀疏问题使得传统模型在很多时候难以得到令人满意的实际效果。</p>
+<p>为此，一个直接的应对方法是对用户行为进行主动式的探索，即通过对用户发起大量尝试性的推荐，以充分的获得其行为数据，从而保障推荐系统的可用性。然而不幸的是，这一简单的做法势必引发极大的探索开销，使得它在现实中并不具备可行性。</p>
+<p>为使主动式探索具备可行的效用开销，人们尝试借助多臂老虎机问题所带来的启发。多臂老虎机问题旨在于“探索-利用”间做出最优的权衡，为此诸多经典算法被相继提出。尽管不同的算法有着不同的实施机制，它们的设计都本着一个共同的原则。</p>
+<p>具体说来，系统在做出推荐的时候会综合考虑物品的推荐效用以及累积尝试。较高的推荐效用预示着较低的探索开销，而较低的累积尝试则表明较高的不确定性。为此，不同的算法都会设计特定的整合机制，使得同时具备较高推荐效用与不确定性物品可以得到优先尝试。</p>
+<h1 id="动态场景下的强化学习"><a href="#动态场景下的强化学习" class="headerlink" title="动态场景下的强化学习"></a>动态场景下的强化学习</h1><p>在多臂老虎机的设定场景下，用户的实时特征被假设为固定不变的，因此算法并未涉及用户行为发生动态迁移的情况。然而对于诸多现实中的推荐场景，用户行为往往会在交互过程中不断变化。这就要求推荐系统依照用户反馈精确估计其状态发展，并为之制定优化的推荐策略。</p>
+<p>具体来讲，一个理想的推荐系统应满足如下双方面的属性。一方面，推荐决策需要充分基于用户过往的反馈数据；另一方面，推荐系统需要优化整个交互过程之中的全局收益。强化学习为实现上述目标提供了有力的技术支持。</p>
+<p>在强化学习的框架之下，推荐系统被视作一个智能体（agent），用户当前的行为特征被抽象成为状态（state），待推荐的对象（如候选新闻）则被当作动作（action）。在每次推荐交互中，系统依据用户的状态，选择合适的动作，以最大化特定的长效目标（如点击总数或停留时长）。推荐系统与用户交互过程中所产生的行为数据被组织成为经验（experience），用以记录相应动作产生的奖励（reward）以及状态转移（state-transition）。基于不断积累的经验，强化学习算法得出策略（policy），用以指导特定状态下最优的动作选取。   </p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
+        <tag>推荐系统</tag>
       </tags>
   </entry>
 </search>
