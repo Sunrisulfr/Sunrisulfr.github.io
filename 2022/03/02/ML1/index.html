@@ -47,7 +47,7 @@
     <div id="single">
     <div id="top" style="display: block;">
     <div class="bar" style="width: 0;"></div>
-    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="https://sunrisulfr.github.io"></a>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="/"></a>
     <div title="播放/暂停" class="iconfont icon-play"></div>
     <h3 class="subtitle">机器学习基础</h3>
     <div class="social">
@@ -66,7 +66,7 @@
     <div class='main'>
         <h1 class="title">机器学习基础</h1>
         <div class="stuff">
-            <span>一月 20, 2021</span>
+            <span>三月 02, 2022</span>
             
   <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag">基础</a></li></ul>
 
@@ -94,13 +94,13 @@
 <li>模型的<strong>方差</strong>，指的是模型预测的<strong>期望值</strong>与<strong>预测值</strong>之间的差平方和；</li>
 </ul>
 </li>
-<li>在<strong>监督学习</strong>中，模型的<strong>泛化误差</strong>可<strong>分解</strong>为偏差、方差与噪声之和。<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817204652.png" height></div>
+<li>在<strong>监督学习</strong>中，模型的<strong>泛化误差</strong>可<strong>分解</strong>为偏差、方差与噪声之和。<div align="center"><img src="/2022/03/02/ML1/TIM截图20180817204652.png" height></div>
 
 </li>
 </ul>
 </blockquote>
 <ul>
-<li><strong>偏差</strong>用于描述模型的<strong>拟合能力</strong>；<br><br><strong>方差</strong>用于描述模型的<strong>稳定性</strong>。<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817192259.png" height></div>
+<li><strong>偏差</strong>用于描述模型的<strong>拟合能力</strong>；<br><br><strong>方差</strong>用于描述模型的<strong>稳定性</strong>。<div align="center"><img src="/2022/03/02/ML1/TIM截图20180817192259.png" height></div>
 
 </li>
 </ul>
@@ -129,20 +129,20 @@
 </blockquote>
 <h3 id="偏差与方差的计算公式"><a href="#偏差与方差的计算公式" class="headerlink" title="偏差与方差的计算公式"></a>偏差与方差的计算公式</h3><ul>
 <li><p>记在<strong>训练集 D</strong> 上学得的模型为</p>
-<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=f(\boldsymbol{x};D)"><img src="/2021/01/20/ML1/_assets/公式_20180817211749.png" height></a></div>
+<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=f(\boldsymbol{x};D)"><img src="/2022/03/02/ML1/_assets/公式_20180817211749.png" height></a></div>
 
 <p>模型的<strong>期望预测</strong>为</p>
-<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\large&space;\hat{f}(\boldsymbol{x})=\mathbb{E}_D[f(\boldsymbol{x};D)]"><img src="/2021/01/20/ML1/公式_20180817210758.png" height></a></div>
+<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\large&space;\hat{f}(\boldsymbol{x})=\mathbb{E}_D[f(\boldsymbol{x};D)]"><img src="/2022/03/02/ML1/公式_20180817210758.png" height></a></div>
 </li>
 <li><p><strong>偏差</strong>（Bias）</p>
-<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\large&space;bias^2(\boldsymbol{x})=(\hat{f}(\boldsymbol{x})-y)^2"><img src="/2021/01/20/ML1/公式_20180817210106.png" height></a></div>
+<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\large&space;bias^2(\boldsymbol{x})=(\hat{f}(\boldsymbol{x})-y)^2"><img src="/2022/03/02/ML1/公式_20180817210106.png" height></a></div>
 
 <blockquote>
 <p><strong>偏差</strong>度量了学习算法的期望预测与真实结果的偏离程度，即刻画了学习算法本身的拟合能力；</p>
 </blockquote>
 </li>
 <li><p><strong>方差</strong>（Variance）</p>
-<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\large&space;var(\boldsymbol{x})=\mathbb{E}_D\left&space;[&space;\left&space;(&space;f(\boldsymbol{x};D)-\hat{f}(\boldsymbol{x})&space;\right&space;)^2&space;\right&space;]"><img src="/2021/01/20/ML1/公式_20180817211903.png" height></a></div>
+<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\large&space;var(\boldsymbol{x})=\mathbb{E}_D\left&space;[&space;\left&space;(&space;f(\boldsymbol{x};D)-\hat{f}(\boldsymbol{x})&space;\right&space;)^2&space;\right&space;]"><img src="/2022/03/02/ML1/公式_20180817211903.png" height></a></div>
 
 <blockquote>
 <p><strong>方差</strong>度量了同样大小的<strong>训练集的变动</strong>所导致的学习性能的变化，即刻画了数据扰动所造成的影响（模型的稳定性）；</p>
@@ -164,7 +164,7 @@
 </ul>
 </li>
 <li><p>偏差和方差的关系和<strong>模型容量</strong>（模型复杂度）、<strong>欠拟合</strong>和<strong>过拟合</strong>的概念紧密相联</p>
-<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817214034.png" height></div>
+<div align="center"><img src="/2022/03/02/ML1/TIM截图20180817214034.png" height></div>
 
 <ul>
 <li>当模型的容量增大（x 轴）时， 偏差（用点表示）随之减小，而方差（虚线）随之增大</li>
@@ -184,7 +184,7 @@
 <p>《统计学习方法》 1.7 生成模型与判别模型</p>
 <ul>
 <li>监督学习的任务是学习一个模型，对给定的输入预测相应的输出</li>
-<li>这个模型的一般形式为一个<strong>决策函数</strong>或一个<strong>条件概率分布</strong>（后验概率）：<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;Y=f(X)\quad&space;\text{or}\quad&space;P(Y|X)"><img src="/2021/01/20/ML1/公式_20180817220004.png" height></a></div>
+<li>这个模型的一般形式为一个<strong>决策函数</strong>或一个<strong>条件概率分布</strong>（后验概率）：<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;Y=f(X)\quad&space;\text{or}\quad&space;P(Y|X)"><img src="/2022/03/02/ML1/公式_20180817220004.png" height></a></div>
 
 </li>
 </ul>
@@ -199,7 +199,7 @@
 <li>直观来说，<strong>判别模型</strong>学习的是类别之间的最优分隔面，反映的是不同类数据之间的差异</li>
 </ul>
 </li>
-<li><strong>生成模型</strong>学习的是联合概率分布<code>P(X,Y)</code>，然后根据条件概率公式计算 <code>P(Y|X)</code><div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X,Y)}{P(X)}"><img src="/2021/01/20/ML1/公式_20180817223923.png" height></a></div>
+<li><strong>生成模型</strong>学习的是联合概率分布<code>P(X,Y)</code>，然后根据条件概率公式计算 <code>P(Y|X)</code><div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X,Y)}{P(X)}"><img src="/2022/03/02/ML1/公式_20180817223923.png" height></a></div>
 
 </li>
 </ul>
@@ -275,7 +275,7 @@
 <ul>
 <li>基于先验概率求得的<strong>反向条件概率</strong>，形式上与条件概率相同（若 <code>P(X|Y)</code> 为正向，则 <code>P(Y|X)</code> 为反向）</li>
 </ul>
-<p><strong>贝叶斯公式</strong><br>  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X|Y)*P(Y)}{P(X)}"><img src="/2021/01/20/ML1/公式_20180817230314.png" height></a></div></p>
+<p><strong>贝叶斯公式</strong><br>  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X|Y)*P(Y)}{P(X)}"><img src="/2022/03/02/ML1/公式_20180817230314.png" height></a></div></p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">

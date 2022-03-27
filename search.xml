@@ -241,7 +241,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
   </entry>
   <entry>
     <title>机器学习基础</title>
-    <url>/2021/01/20/ML1/</url>
+    <url>/2022/03/02/ML1/</url>
     <content><![CDATA[<ul>
 <li><a href="#偏差与方差">偏差与方差</a><ul>
 <li><a href="#导致偏差和方差的原因">导致偏差和方差的原因</a></li>
@@ -263,13 +263,13 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 <li>模型的<strong>方差</strong>，指的是模型预测的<strong>期望值</strong>与<strong>预测值</strong>之间的差平方和；</li>
 </ul>
 </li>
-<li>在<strong>监督学习</strong>中，模型的<strong>泛化误差</strong>可<strong>分解</strong>为偏差、方差与噪声之和。<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817204652.png" height></div>
+<li>在<strong>监督学习</strong>中，模型的<strong>泛化误差</strong>可<strong>分解</strong>为偏差、方差与噪声之和。<div align="center"><img src="/2022/03/02/ML1/TIM截图20180817204652.png" height></div>
 
 </li>
 </ul>
 </blockquote>
 <ul>
-<li><strong>偏差</strong>用于描述模型的<strong>拟合能力</strong>；<br><br><strong>方差</strong>用于描述模型的<strong>稳定性</strong>。<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817192259.png" height></div>
+<li><strong>偏差</strong>用于描述模型的<strong>拟合能力</strong>；<br><br><strong>方差</strong>用于描述模型的<strong>稳定性</strong>。<div align="center"><img src="/2022/03/02/ML1/TIM截图20180817192259.png" height></div>
 
 </li>
 </ul>
@@ -298,20 +298,20 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 </blockquote>
 <h3 id="偏差与方差的计算公式"><a href="#偏差与方差的计算公式" class="headerlink" title="偏差与方差的计算公式"></a>偏差与方差的计算公式</h3><ul>
 <li><p>记在<strong>训练集 D</strong> 上学得的模型为</p>
-<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=f(\boldsymbol{x};D)"><img src="/2021/01/20/ML1/_assets/公式_20180817211749.png" height></a></div>
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=f(\boldsymbol{x};D)"><img src="/2022/03/02/ML1/_assets/公式_20180817211749.png" height></a></div>
 
 <p>模型的<strong>期望预测</strong>为</p>
-<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;\hat{f}(\boldsymbol{x})=\mathbb{E}_D[f(\boldsymbol{x};D)]"><img src="/2021/01/20/ML1/公式_20180817210758.png" height></a></div>
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;\hat{f}(\boldsymbol{x})=\mathbb{E}_D[f(\boldsymbol{x};D)]"><img src="/2022/03/02/ML1/公式_20180817210758.png" height></a></div>
 </li>
 <li><p><strong>偏差</strong>（Bias）</p>
-<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;bias^2(\boldsymbol{x})=(\hat{f}(\boldsymbol{x})-y)^2"><img src="/2021/01/20/ML1/公式_20180817210106.png" height></a></div>
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;bias^2(\boldsymbol{x})=(\hat{f}(\boldsymbol{x})-y)^2"><img src="/2022/03/02/ML1/公式_20180817210106.png" height></a></div>
 
 <blockquote>
 <p><strong>偏差</strong>度量了学习算法的期望预测与真实结果的偏离程度，即刻画了学习算法本身的拟合能力；</p>
 </blockquote>
 </li>
 <li><p><strong>方差</strong>（Variance）</p>
-<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;var(\boldsymbol{x})=\mathbb{E}_D\left&space;[&space;\left&space;(&space;f(\boldsymbol{x};D)-\hat{f}(\boldsymbol{x})&space;\right&space;)^2&space;\right&space;]"><img src="/2021/01/20/ML1/公式_20180817211903.png" height></a></div>
+<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;var(\boldsymbol{x})=\mathbb{E}_D\left&space;[&space;\left&space;(&space;f(\boldsymbol{x};D)-\hat{f}(\boldsymbol{x})&space;\right&space;)^2&space;\right&space;]"><img src="/2022/03/02/ML1/公式_20180817211903.png" height></a></div>
 
 <blockquote>
 <p><strong>方差</strong>度量了同样大小的<strong>训练集的变动</strong>所导致的学习性能的变化，即刻画了数据扰动所造成的影响（模型的稳定性）；</p>
@@ -333,7 +333,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 </ul>
 </li>
 <li><p>偏差和方差的关系和<strong>模型容量</strong>（模型复杂度）、<strong>欠拟合</strong>和<strong>过拟合</strong>的概念紧密相联</p>
-<div align="center"><img src="/2021/01/20/ML1/TIM截图20180817214034.png" height></div>
+<div align="center"><img src="/2022/03/02/ML1/TIM截图20180817214034.png" height></div>
 
 <ul>
 <li>当模型的容量增大（x 轴）时， 偏差（用点表示）随之减小，而方差（虚线）随之增大</li>
@@ -353,7 +353,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 <p>《统计学习方法》 1.7 生成模型与判别模型</p>
 <ul>
 <li>监督学习的任务是学习一个模型，对给定的输入预测相应的输出</li>
-<li>这个模型的一般形式为一个<strong>决策函数</strong>或一个<strong>条件概率分布</strong>（后验概率）：<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;Y=f(X)\quad&space;\text{or}\quad&space;P(Y|X)"><img src="/2021/01/20/ML1/公式_20180817220004.png" height></a></div>
+<li>这个模型的一般形式为一个<strong>决策函数</strong>或一个<strong>条件概率分布</strong>（后验概率）：<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;Y=f(X)\quad&space;\text{or}\quad&space;P(Y|X)"><img src="/2022/03/02/ML1/公式_20180817220004.png" height></a></div>
 
 </li>
 </ul>
@@ -368,7 +368,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 <li>直观来说，<strong>判别模型</strong>学习的是类别之间的最优分隔面，反映的是不同类数据之间的差异</li>
 </ul>
 </li>
-<li><strong>生成模型</strong>学习的是联合概率分布<code>P(X,Y)</code>，然后根据条件概率公式计算 <code>P(Y|X)</code><div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X,Y)}{P(X)}"><img src="/2021/01/20/ML1/公式_20180817223923.png" height></a></div>
+<li><strong>生成模型</strong>学习的是联合概率分布<code>P(X,Y)</code>，然后根据条件概率公式计算 <code>P(Y|X)</code><div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X,Y)}{P(X)}"><img src="/2022/03/02/ML1/公式_20180817223923.png" height></a></div>
 
 </li>
 </ul>
@@ -444,7 +444,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 <ul>
 <li>基于先验概率求得的<strong>反向条件概率</strong>，形式上与条件概率相同（若 <code>P(X|Y)</code> 为正向，则 <code>P(Y|X)</code> 为反向）</li>
 </ul>
-<p><strong>贝叶斯公式</strong><br>  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X|Y)*P(Y)}{P(X)}"><img src="/2021/01/20/ML1/公式_20180817230314.png" height></a></div></p>
+<p><strong>贝叶斯公式</strong><br>  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;\large&space;P(Y|X)=\frac{P(X|Y)*P(Y)}{P(X)}"><img src="/2022/03/02/ML1/公式_20180817230314.png" height></a></div></p>
 ]]></content>
       <categories>
         <category>机器学习</category>
@@ -474,6 +474,19 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
       <tags>
         <tag>强化学习</tag>
         <tag>推荐系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Leetcode 日记：日常练习篇</title>
+    <url>/2022/03/01/Leetcode2/</url>
+    <content><![CDATA[<h1 id="179-最大数"><a href="#179-最大数" class="headerlink" title="179. 最大数"></a>179. 最大数</h1><h2 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h2><p>给定一组非负整数 nums，重新排列每个数的顺序（每个数不可拆分）使之组成一个最大的整数。</p>
+<p>注意：输出结果可能非常大，所以你需要返回一个字符串而不是整数。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">cmp</span> <span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span></span>&#123;</span><br><span class="line">            <span class="built_in">string</span> aa = to_string(a) + to_string(b);</span><br><span class="line">            <span class="built_in">string</span> bb = to_string(b) + to_string(a);</span><br><span class="line">            <span class="keyword">return</span> aa &gt; bb;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">largestNumber</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">string</span> ans;</span><br><span class="line">        sort(nums.begin(), nums.end(), cmp);</span><br><span class="line">        <span class="keyword">if</span>(nums[<span class="number">0</span>] == <span class="number">0</span>) <span class="keyword">return</span> <span class="string">&quot;0&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;n : nums)&#123;</span><br><span class="line">            ans += to_string(n);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>题</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
       </tags>
   </entry>
 </search>
