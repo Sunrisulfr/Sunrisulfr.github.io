@@ -67,6 +67,7 @@ Ray,">
         <div class="content markdown">
             <h1 id="Ray数据集-分布式数据加载和计算"><a href="#Ray数据集-分布式数据加载和计算" class="headerlink" title="Ray数据集:分布式数据加载和计算"></a>Ray数据集:分布式数据加载和计算</h1><p>Ray数据集是在Ray库和应用程序中加载和交换数据的标准方式。它们提供基本的分布式数据转换，如<code>映射</code>、<code>过滤</code>和<code>重分区</code>，并与各种文件格式、数据源和分布式框架兼容。</p>
 <p>Ray数据集简化了通用GPU和CPU并行计算;例如，GPU批处理推理。在这种尴尬的并行计算情况下，它为Ray任务和角色提供了更高层次的API，内部处理批处理、流水线和内存管理等操作。</p>
+<p><img src="/2022/04/07/ray_data/dataset.svg" alt="Ray_data_head"></p>
 <p>作为Ray生态系统的一部分，Ray数据集可以充分利用Ray的分布式调度器的全部功能，例如，使用actor来优化设置时间和GPU调度。</p>
 <h1 id="数据集快速启动"><a href="#数据集快速启动" class="headerlink" title="数据集快速启动"></a>数据集快速启动</h1><p>Ray数据集实现分布式 <a target="_blank" rel="noopener" href="https://arrow.apache.org/">Arrow</a>。数据集由Ray对象引用<em>blocks</em>的列表组成。每个<em>block</em>包含<a target="_blank" rel="noopener" href="https://arrow.apache.org/docs/python/data.html#tables">Arrow table</a>(创建或转换为表格或张量数据时)、<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">Pandas DataFrame</a>(创建或转换为Pandas数据时)或Python列表(否则)中的一组项。让我们从创建数据集开始。</p>
 <h1 id="创建数据集"><a href="#创建数据集" class="headerlink" title="创建数据集"></a>创建数据集</h1><p>运行<code>pip install &quot;ray[data]&quot;</code>开始!</p>
