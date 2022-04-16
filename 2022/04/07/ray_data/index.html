@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ray：Data - Sunrisulfr的菠萝屋</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Sunrisulfr,"> 
+    <meta name="description" content="Ray数据集:分布式数据加载和计算Ray数据集是在Ray库和应用程序中加载和交换数据的标准方式。它们提供基本的分布式数据转换，如映射、过滤和重分区，并与各种文件格式、数据源和分布式框架兼容。
+Ray,"> 
+    <meta name="author" content="Sunrisulfr"> 
+    <link rel="alternative" href="atom.xml" title="Sunrisulfr的菠萝屋" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Sunrisulfr的菠萝屋</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="/"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">Ray：Data</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Ray：Data</h1>
+        <div class="stuff">
+            <span>四月 07, 2022</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Ray/" rel="tag">Ray</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h1 id="Ray数据集-分布式数据加载和计算"><a href="#Ray数据集-分布式数据加载和计算" class="headerlink" title="Ray数据集:分布式数据加载和计算"></a>Ray数据集:分布式数据加载和计算</h1><p>Ray数据集是在Ray库和应用程序中加载和交换数据的标准方式。它们提供基本的分布式数据转换，如<code>映射</code>、<code>过滤</code>和<code>重分区</code>，并与各种文件格式、数据源和分布式框架兼容。</p>
+<p>Ray数据集简化了通用GPU和CPU并行计算;例如，GPU批处理推理。在这种尴尬的并行计算情况下，它为Ray任务和角色提供了更高层次的API，内部处理批处理、流水线和内存管理等操作。</p>
+<p>作为Ray生态系统的一部分，Ray数据集可以充分利用Ray的分布式调度器的全部功能，例如，使用actor来优化设置时间和GPU调度。</p>
+<h1 id="数据集快速启动"><a href="#数据集快速启动" class="headerlink" title="数据集快速启动"></a>数据集快速启动</h1><p>Ray数据集实现分布式 <a target="_blank" rel="noopener" href="https://arrow.apache.org/">Arrow</a>。数据集由Ray对象引用<em>blocks</em>的列表组成。每个<em>block</em>包含<a target="_blank" rel="noopener" href="https://arrow.apache.org/docs/python/data.html#tables">Arrow table</a>(创建或转换为表格或张量数据时)、<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">Pandas DataFrame</a>(创建或转换为Pandas数据时)或Python列表(否则)中的一组项。让我们从创建数据集开始。</p>
+<h1 id="创建数据集"><a href="#创建数据集" class="headerlink" title="创建数据集"></a>创建数据集</h1><p>运行<code>pip install &quot;ray[data]&quot;</code>开始!</p>
+<p>可以从使用<code>ray.data.range()</code>和<code>ray.data.from_items()</code>从合成数据创建数据集开始。数据集既可以保存普通的Python对象(即它们的模式是Python类型)，也可以保存Arrow记录(在这种情况下它们的模式是Arrow)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ray</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a Dataset of Python objects.</span></span><br><span class="line">ds = ray.data.range(<span class="number">10000</span>)</span><br><span class="line"><span class="comment"># -&gt; Dataset(num_blocks=200, num_rows=10000, schema=&lt;class &#x27;int&#x27;&gt;)</span></span><br><span class="line"></span><br><span class="line">ds.take(<span class="number">5</span>)</span><br><span class="line"><span class="comment"># -&gt; [0, 1, 2, 3, 4]</span></span><br><span class="line"></span><br><span class="line">ds.count()</span><br><span class="line"><span class="comment"># -&gt; 10000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a Dataset of Arrow records.</span></span><br><span class="line">ds = ray.data.from_items([&#123;<span class="string">&quot;col1&quot;</span>: i, <span class="string">&quot;col2&quot;</span>: str(i)&#125; <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000</span>)])</span><br><span class="line"><span class="comment"># -&gt; Dataset(num_blocks=200, num_rows=10000, schema=&#123;col1: int64, col2: string&#125;)</span></span><br><span class="line"></span><br><span class="line">ds.show(<span class="number">5</span>)</span><br><span class="line"><span class="comment"># -&gt; &#123;&#x27;col1&#x27;: 0, &#x27;col2&#x27;: &#x27;0&#x27;&#125;</span></span><br><span class="line"><span class="comment"># -&gt; &#123;&#x27;col1&#x27;: 1, &#x27;col2&#x27;: &#x27;1&#x27;&#125;</span></span><br><span class="line"><span class="comment"># -&gt; &#123;&#x27;col1&#x27;: 2, &#x27;col2&#x27;: &#x27;2&#x27;&#125;</span></span><br><span class="line"><span class="comment"># -&gt; &#123;&#x27;col1&#x27;: 3, &#x27;col2&#x27;: &#x27;3&#x27;&#125;</span></span><br><span class="line"><span class="comment"># -&gt; &#123;&#x27;col1&#x27;: 4, &#x27;col2&#x27;: &#x27;4&#x27;&#125;</span></span><br><span class="line"></span><br><span class="line">ds.schema()</span><br><span class="line"><span class="comment"># -&gt; col1: int64</span></span><br><span class="line"><span class="comment"># -&gt; col2: string</span></span><br></pre></td></tr></table></figure>
+<p>数据集可以从本地磁盘或远程数据源(如S3)上的文件创建。pyarrow支持的任何文件系统都可以用来指定文件位置:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Read a directory of files in remote storage.</span></span><br><span class="line">ds = ray.data.read_csv(<span class="string">&quot;s3://bucket/path&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read multiple local files.</span></span><br><span class="line">ds = ray.data.read_csv([<span class="string">&quot;/path/to/file1&quot;</span>, <span class="string">&quot;/path/to/file2&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read multiple directories.</span></span><br><span class="line">ds = ray.data.read_csv([<span class="string">&quot;s3://bucket/path1&quot;</span>, <span class="string">&quot;s3://bucket/path2&quot;</span>])</span><br></pre></td></tr></table></figure>
+<p>最后，你可以从Ray对象存储或兼容Ray的分布式DataFrames中创建一个数据集:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> dask.dataframe <span class="keyword">as</span> dd</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a Dataset from a list of Pandas DataFrame objects.</span></span><br><span class="line">pdf = pd.DataFrame(&#123;<span class="string">&quot;one&quot;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="string">&quot;two&quot;</span>: [<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>]&#125;)</span><br><span class="line">ds = ray.data.from_pandas([pdf])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a Dataset from a Dask-on-Ray DataFrame.</span></span><br><span class="line">dask_df = dd.from_pandas(pdf, npartitions=<span class="number">10</span>)</span><br><span class="line">ds = ray.data.from_dask(dask_df)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="保存数据集"><a href="#保存数据集" class="headerlink" title="保存数据集"></a>保存数据集</h1><p>数据集可以使用<code>.write_csv()</code>、<code>.write_json()</code>和<code>.write_parquet()</code>写入本地或远程存储。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Write to csv files in /tmp/output.</span></span><br><span class="line">ray.data.range(<span class="number">10000</span>).write_csv(<span class="string">&quot;/tmp/output&quot;</span>)</span><br><span class="line"><span class="comment"># -&gt; /tmp/output/data0.csv, /tmp/output/data1.csv, ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Use repartition to control the number of output files:</span></span><br><span class="line">ray.data.range(<span class="number">10000</span>).repartition(<span class="number">1</span>).write_csv(<span class="string">&quot;/tmp/output2&quot;</span>)</span><br><span class="line"><span class="comment"># -&gt; /tmp/output2/data0.csv</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Transforming-Datasets"><a href="#Transforming-Datasets" class="headerlink" title="Transforming Datasets"></a>Transforming Datasets</h1><p>数据集可以使用<code>.map_batches()</code>进行并行转换。Ray将使用给定的函数转换数据集中的记录批。函数必须返回一批记录。允许您筛选或向批处理中添加其他记录，这将改变数据集的大小。<br>转换被急切地执行并阻塞，直到操作完成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transform_batch</span>(<span class="params">df: pandas.DataFrame</span>) -&gt; pandas.DataFrame:</span></span><br><span class="line">    <span class="keyword">return</span> df.applymap(<span class="keyword">lambda</span> x: x * <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">ds = ray.data.range_arrow(<span class="number">10000</span>)</span><br><span class="line">ds = ds.map_batches(transform_batch, batch_format=<span class="string">&quot;pandas&quot;</span>)</span><br><span class="line"><span class="comment"># -&gt; Map Progress: 100%|████████████████████| 200/200 [00:00&lt;00:00, 1927.62it/s]</span></span><br><span class="line">ds.take(<span class="number">5</span>)</span><br><span class="line"><span class="comment"># -&gt; [&#123;&#x27;value&#x27;: 0&#125;, &#123;&#x27;value&#x27;: 2&#125;, ...]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>批处理格式可以使用batch_format选项指定，默认值为” native “，这意味着支持arrow的批处理使用pandas格式，其他类型使用Python列表。您还可以显式地指定“arrow”或“pandas”来强制转换为该批格式。批量大小也可以选择。如果没有给出，批处理大小将默认为整个块。</p>
+<p>数据集还提供了方便的方法map、flat_map和filter，它们不是向量化的(比map_batches慢)，但可能对开发有用。</p>
+<p>默认情况下，使用Ray任务执行转换。对于需要设置的转换，指定<code>compute=ray.data.ActorPoolStrategy(min, max)</code>和Ray将使用一个由min到max的角色自动伸缩的角色池来执行你的转换。对于固定大小的actor池，指定<code>ActorPoolStrategy(n, n)</code>。下面是一个使用Ray Data读取、转换和保存批处理推理结果的端到端示例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ray.data <span class="keyword">import</span> ActorPoolStrategy</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example of GPU batch inference on an ImageNet model.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">preprocess</span>(<span class="params">images: List[bytes]</span>) -&gt; List[bytes]:</span></span><br><span class="line">    <span class="keyword">return</span> images</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BatchInferModel</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model = ImageNetModel()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, batch: pd.DataFrame</span>) -&gt; pd.DataFrame:</span></span><br><span class="line">        <span class="keyword">return</span> self.model(batch)</span><br><span class="line"></span><br><span class="line">ds = ray.data.read_binary_files(<span class="string">&quot;s3://bucket/image-dir&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Preprocess the data.</span></span><br><span class="line">ds = ds.map_batches(preprocess)</span><br><span class="line"><span class="comment"># -&gt; Map Progress: 100%|████████████████████| 200/200 [00:00&lt;00:00, 1123.54it/s]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Apply GPU batch inference with actors, and assign each actor a GPU using</span></span><br><span class="line"><span class="comment"># ``num_gpus=1`` (any Ray remote decorator argument can be used here).</span></span><br><span class="line">ds = ds.map_batches(</span><br><span class="line">    BatchInferModel, compute=ActorPoolStrategy(<span class="number">10</span>, <span class="number">20</span>),</span><br><span class="line">    batch_size=<span class="number">256</span>, num_gpus=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># -&gt; Map Progress (16 actors 4 pending): 100%|██████| 200/200 [00:07, 27.60it/s]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Save the results.</span></span><br><span class="line">ds.repartition(<span class="number">1</span>).write_json(<span class="string">&quot;s3://bucket/inference-results&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="传递和访问数据集"><a href="#传递和访问数据集" class="headerlink" title="传递和访问数据集"></a>传递和访问数据集</h1><p>数据集可以传递给Ray任务或角色，并通过.iter_batches()或.iter_rows()访问。这不会导致复制，因为数据集的块是作为Ray对象引用传递的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">consume</span>(<span class="params">data: Dataset[int]</span>) -&gt; int:</span></span><br><span class="line">    num_batches = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> data.iter_batches():</span><br><span class="line">        num_batches += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> num_batches</span><br><span class="line"></span><br><span class="line">ds = ray.data.range(<span class="number">10000</span>)</span><br><span class="line">ray.get(consume.remote(ds))</span><br><span class="line"><span class="comment"># -&gt; 200</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>数据集可以被分割成不相交的子数据集。如果您向split()函数传递一个actor句柄列表以及所需的分割数量，那么支持位置感知的分割。这是一个常见的模式，用于在分布式训练参与者之间加载和分割数据:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ray.remote(num_gpus=1)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, rank: int</span>):</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self, shard: ray.data.Dataset[int]</span>) -&gt; int:</span></span><br><span class="line">        <span class="keyword">for</span> batch <span class="keyword">in</span> shard.iter_batches(batch_size=<span class="number">256</span>):</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">return</span> shard.count()</span><br><span class="line"></span><br><span class="line">workers = [Worker.remote(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">16</span>)]</span><br><span class="line"><span class="comment"># -&gt; [Actor(Worker, ...), Actor(Worker, ...), ...]</span></span><br><span class="line"></span><br><span class="line">ds = ray.data.range(<span class="number">10000</span>)</span><br><span class="line"><span class="comment"># -&gt; Dataset(num_blocks=200, num_rows=10000, schema=&lt;class &#x27;int&#x27;&gt;)</span></span><br><span class="line"></span><br><span class="line">shards = ds.split(n=<span class="number">16</span>, locality_hints=workers)</span><br><span class="line"><span class="comment"># -&gt; [Dataset(num_blocks=13, num_rows=650, schema=&lt;class &#x27;int&#x27;&gt;),</span></span><br><span class="line"><span class="comment">#     Dataset(num_blocks=13, num_rows=650, schema=&lt;class &#x27;int&#x27;&gt;), ...]</span></span><br><span class="line"></span><br><span class="line">ray.get([w.train.remote(s) <span class="keyword">for</span> w, s <span class="keyword">in</span> zip(workers, shards)])</span><br><span class="line"><span class="comment"># -&gt; [650, 650, ...]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='f16f580b288c93fceb5d'
+        data-cs='b844e802d1894562ccabe326fcf989821a9a0915'
+        data-r='blogissue'
+        data-o='sunrisulfr'
+        data-a='sunrisulfr'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>
