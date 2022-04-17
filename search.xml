@@ -736,4 +736,22 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
         <tag>分布式</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Ray：Core</title>
+    <url>/2022/04/08/ray_core/</url>
+    <content><![CDATA[<h1 id="关键概念"><a href="#关键概念" class="headerlink" title="关键概念"></a>关键概念</h1><p>本节概述Ray的关键概念。这些原语一起工作，使Ray能够灵活地支持广泛的分布式应用程序。</p>
+<h2 id="任务Tasks"><a href="#任务Tasks" class="headerlink" title="任务Tasks"></a>任务Tasks</h2><p>Ray允许任意函数在不同的Python工作器上异步执行。这些异步Ray函数被称为“Tasks”。Ray使Task能够根据cpu、gpu和自定义资源来指定它们的资源需求。集群调度器使用这些资源请求来跨集群分发任务以实现并行执行。</p>
+<h2 id="演员Actors"><a href="#演员Actors" class="headerlink" title="演员Actors"></a>演员Actors</h2><p>Actors将Ray API从函数(任务)扩展到类。参与者本质上是一个有状态的worker(或server)。当一个新的actor被实例化时，一个新的worker被创建，并且actor的方法被安排在那个特定的worker上，并且可以访问和改变那个worker的状态。和Task一样，Actor也支持CPU、GPU和自定义资源需求。</p>
+<h2 id="对象Object"><a href="#对象Object" class="headerlink" title="对象Object"></a>对象Object</h2><p>在Ray中，Task和Actor创建和计算Object。我们将这些Object称为<code>remote objects</code>，因为它们可以存储在Ray集群中的任何位置，我们使用引用来引用它们。Remote objects缓存在Ray的分布式共享内存对象存储中，集群中的每个节点都有一个对象存储。在集群设置中，remote objects可以存在于一个或多个节点上，与谁持有对象ref无关。</p>
+<h2 id="Placement-Groups"><a href="#Placement-Groups" class="headerlink" title="Placement Groups"></a>Placement Groups</h2><p>Placement Groups允许用户自动地跨多个节点保留资源组(即，组调度)。然后，可以使用它们来调度Ray Task和Actor，它们按照位置(PACK)尽可能紧密地打包，或者分散(spread)。位置组通常用于安排Actor，但也支持Task。</p>
+<h2 id="环境的依赖关系"><a href="#环境的依赖关系" class="headerlink" title="环境的依赖关系"></a>环境的依赖关系</h2><p>当Ray在远程机器上执行Task和Actor时，它们的环境依赖项(例如Python包、本地文件、环境变量)必须可用来运行代码。为了解决这个问题，你可以(1)使用Ray cluster Launcher提前准备你对集群的依赖，或者(2)使用Ray的运行时环境来动态安装它们。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>Ray</tag>
+        <tag>分布式</tag>
+      </tags>
+  </entry>
 </search>
