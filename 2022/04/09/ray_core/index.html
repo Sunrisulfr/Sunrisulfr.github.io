@@ -58,7 +58,7 @@
     <div class='main'>
         <h1 class="title">Ray：Core</h1>
         <div class="stuff">
-            <span>四月 08, 2022</span>
+            <span>四月 09, 2022</span>
             
   <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/Ray/" rel="tag">Ray</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li></ul>
 
@@ -71,7 +71,7 @@
 <h2 id="对象Object"><a href="#对象Object" class="headerlink" title="对象Object"></a>对象Object</h2><p>在Ray中，Task和Actor创建和计算Object。我们将这些Object称为<code>remote objects</code>，因为它们可以存储在Ray集群中的任何位置，我们使用引用来引用它们。Remote objects缓存在Ray的分布式共享内存对象存储中，集群中的每个节点都有一个对象存储。在集群设置中，remote objects可以存在于一个或多个节点上，与谁持有对象ref无关。</p>
 <h2 id="Placement-Groups"><a href="#Placement-Groups" class="headerlink" title="Placement Groups"></a>Placement Groups</h2><p>Placement Groups允许用户自动地跨多个节点保留资源组(即，组调度)。然后，可以使用它们来调度Ray Task和Actor，它们按照位置(PACK)尽可能紧密地打包，或者分散(spread)。位置组通常用于安排Actor，但也支持Task。</p>
 <h2 id="环境的依赖关系"><a href="#环境的依赖关系" class="headerlink" title="环境的依赖关系"></a>环境的依赖关系</h2><p>当Ray在远程机器上执行Task和Actor时，它们的环境依赖项(例如Python包、本地文件、环境变量)必须可用来运行代码。为了解决这个问题，你可以(1)使用Ray cluster Launcher提前准备你对集群的依赖，或者(2)使用Ray的运行时环境来动态安装它们。</p>
-
+<h1 id><a href="#" class="headerlink" title="#"></a>#</h1>
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
