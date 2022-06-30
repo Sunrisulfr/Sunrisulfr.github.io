@@ -180,15 +180,15 @@ Index
 - 给出一个问题或模型的定义，然后求其最优解的过程 -->
 <h1 id="符号说明"><a href="#符号说明" class="headerlink" title="符号说明"></a>符号说明</h1><ul>
 <li>基本遵从《统计学习方法》一书中的符号表示。</li>
-<li><p>除特别说明，默认$w$为行向量，$x$为列向量，以避免在<code>wx</code>中使用转置符号；但有些公式为了更清晰区分向量与标量，依然会使用<code>^T</code>的上标，注意区分。</p>
+<li><p>除特别说明，默认$w$为行向量，$x$为列向量，以避免在$wx$中使用转置符号；但有些公式为了更清晰区分向量与标量，依然会使用$^T$的上标，注意区分。</p>
 <p>  输入实例<code>x</code>的特征向量记为：</p>
-  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=x=(x^{(1)},x^{(2)},\cdots,x^{(n)})^T"><img src="/2022/03/07/ML2/_assets/公式_20180713114026.png" height></a></div>
+  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=x=(x^{(1)},x^{(2)},\cdots,x^{(n)})^T"><img src="/2022/03/07/ML2/公式_20180713114026.png" height></a></div>
 
-<p>  注意：$x_i$ 和 $x^(i)$ 含义不同，前者表示训练集中第 i 个实例，后者表示特征向量中的第 i 个分量；因此，通常记训练集为：</p>
-  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=T=\left&space;\{&space;(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)&space;\right&space;\}"><img src="/2022/03/07/ML2/_assets/公式_20180713132400.png" height></a></div>
+<p>  注意：$x_i$ 和 $x^{(i)}$ 含义不同，前者表示训练集中第 i 个实例，后者表示特征向量中的第 i 个分量；因此，通常记训练集为：</p>
+  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=T=\left&space;\{&space;(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)&space;\right&space;\}"><img src="/2022/03/07/ML2/公式_20180713132400.png" height></a></div>
 
 <blockquote>
-<p>特征向量用小<code>n</code>表示维数，训练集用大<code>N</code>表示个数</p>
+<p>特征向量用小$n$表示维数，训练集用大$N$表示个数</p>
 </blockquote>
 </li>
 <li><p><strong>公式说明</strong></p>
@@ -211,7 +211,7 @@ Index
 
 <ul>
 <li><p><strong>自信息</strong>（self-information）是一种量化以上性质的函数，定义一个事件<code>x</code>的自信息为：</p>
-  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=I(x)=-\log&space;P(x)"><img src="/2022/03/07/ML2/_assets/公式_20180610215339.png" height></a></div>
+  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=I(x)=-\log&space;P(x)"><img src="/2022/03/07/ML2/公式_20180610215339.png" height></a></div>
 
 <blockquote>
 <p>当该对数的底数为自然对数 e 时，单位为奈特（nats）；当以 2 为底数时，单位为比特（bit）或香农（shannons）</p>
@@ -220,7 +220,7 @@ Index
 <li><p>自信息只处理单个的输出。</p>
 </li>
 <li><p><strong>信息熵</strong>（Information-entropy）用于对整个概率分布中的<strong>不确定性总量</strong>进行量化：</p>
-  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=H(\mathrm{X})=\mathbb{E}_{\mathrm{X}&space;\sim&space;P}[I(x)]=-\sum_{x&space;\in&space;\mathrm{X}}P(x)\log&space;P(x)"><img src="/2022/03/07/ML2/_assets/公式_20180610215417.png" height></a></div>
+  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=H(\mathrm{X})=\mathbb{E}_{\mathrm{X}&space;\sim&space;P}[I(x)]=-\sum_{x&space;\in&space;\mathrm{X}}P(x)\log&space;P(x)"><img src="/2022/03/07/ML2/公式_20180610215417.png" height></a></div>
 
 <blockquote>
 <p>信息论中，记 <code>0log0 = 0</code></p>
@@ -231,7 +231,7 @@ Index
 
 <ul>
 <li><p>定义 <strong>P 对 Q</strong> 的 <strong>KL 散度</strong>（Kullback-Leibler divergence）：</p>
-  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=D_P(Q)=\mathbb{E}_{\mathrm{X}\sim&space;P}\left&space;[&space;\log&space;\frac{P(x)}{Q(x)}&space;\right&space;]=\sum_{x&space;\in&space;\mathrm{X}}P(x)\left&space;[&space;\log&space;P(x)-\log&space;Q(x)&space;\right&space;]"><img src="/2022/03/07/ML2/_assets/公式_20180610215445.png" height></a></div>
+  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=D_P(Q)=\mathbb{E}_{\mathrm{X}\sim&space;P}\left&space;[&space;\log&space;\frac{P(x)}{Q(x)}&space;\right&space;]=\sum_{x&space;\in&space;\mathrm{X}}P(x)\left&space;[&space;\log&space;P(x)-\log&space;Q(x)&space;\right&space;]"><img src="/2022/03/07/ML2/公式_20180610215445.png" height></a></div>
 
 </li>
 </ul>
@@ -245,7 +245,7 @@ Index
 <li>不对称；D_p(q) != D_q(p)</li>
 </ul>
 <p><strong>交叉熵</strong>（cross-entropy）：</p>
-<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=H_P(Q)=-\mathbb{E}_{\mathrm{X}\sim&space;P}\log&space;Q(x)=-\sum_{x&space;\in&space;\mathrm{X}}P(x)\log&space;Q(x)"><img src="/2022/03/07/ML2/_assets/公式_20180610215522.png" height></a></div>
+<div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=H_P(Q)=-\mathbb{E}_{\mathrm{X}\sim&space;P}\log&space;Q(x)=-\sum_{x&space;\in&space;\mathrm{X}}P(x)\log&space;Q(x)"><img src="/2022/03/07/ML2/公式_20180610215522.png" height></a></div>
 
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/haolexiao/article/details/70142571">信息量，信息熵，交叉熵，KL散度和互信息（信息增益）</a> - CSDN博客</p>
@@ -253,7 +253,7 @@ Index
 <p><strong>交叉熵 与 KL 散度的关系</strong></p>
 <ul>
 <li><p><strong>针对 Q 最小化交叉熵等价于最小化 P 对 Q 的 KL 散度</strong>，因为 Q 并不参与被省略的那一项。</p>
-  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=H_P(Q)=H(P)&plus;D_P(Q)"><img src="/2022/03/07/ML2/_assets/公式_20180610215554.png" height></a></div>
+  <div align="center"><a target="_blank" rel="noopener" href="http://www.codecogs.com/eqnedit.php?latex=H_P(Q)=H(P)&plus;D_P(Q)"><img src="/2022/03/07/ML2/公式_20180610215554.png" height></a></div>
 </li>
 <li><p>最大似然估计中，最小化 KL 散度其实就是在最小化分布之间的交叉熵。</p>
 <blockquote>
