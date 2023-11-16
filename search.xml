@@ -731,7 +731,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 </ul>
 </li>
 <li><p>Internal Damping for Spring</p>
-<p>  <img src="/2023/10/31/Animation_Math/Untitled.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled.png"></p>
+<p>  <img src="/2023/10/31/Animation_Math/Untitled.png" alt="Animation_Math/Untitled.png"></p>
 <ul>
 <li>Viscous drag only on change in spring length<ul>
 <li>Won’t slow group motion for the spring system (e.g. global translation or rotation of the group)</li>
@@ -754,25 +754,25 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 <li>This structure will not resist shearing切变会露馅</li>
 <li>This structure will not resist out-of-plane bending…</li>
 </ul>
-<p><img src="/2023/10/31/Animation_Math/Untitled%201.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%201.png"></p>
+<p><img src="/2023/10/31/Animation_Math/Untitled%201.png" alt="Animation_Math/Untitled%201.png"></p>
 <p>Step 2: 加强筋</p>
 <ul>
 <li>This structure will resist shearing but has anisotropic bias 各向异性</li>
 <li>This structure will not resist out-of-plane bending either…</li>
 </ul>
-<p><img src="/2023/10/31/Animation_Math/Untitled%202.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%202.png"></p>
+<p><img src="/2023/10/31/Animation_Math/Untitled%202.png" alt="Animation_Math/Untitled%202.png"></p>
 <p>Step 3: 加强筋 plus</p>
 <ul>
 <li>This structure will resist shearing. Less directional bias.</li>
 <li>This structure will not resist out-of-plane bending either… 弯折</li>
 </ul>
-<p><img src="/2023/10/31/Animation_Math/Untitled%203.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%203.png"></p>
+<p><img src="/2023/10/31/Animation_Math/Untitled%203.png" alt="Animation_Math/Untitled%203.png"></p>
 <p>Step 4: 加强筋 max （skip connection）</p>
 <ul>
 <li>This structure will resist shearing. Less directional bias.</li>
 <li>This structure will resist out-of-plane bending （Red springs should be much weaker）</li>
 </ul>
-<p><img src="/2023/10/31/Animation_Math/Untitled%204.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%204.png"></p>
+<p><img src="/2023/10/31/Animation_Math/Untitled%204.png" alt="Animation_Math/Untitled%204.png"></p>
 <h2 id="FEM-Finite-Element-Method-Instead-of-Springs"><a href="#FEM-Finite-Element-Method-Instead-of-Springs" class="headerlink" title="FEM (Finite Element Method) Instead of Springs"></a>FEM (Finite Element Method) Instead of Springs</h2><p>有限元方法</p>
 <ul>
 <li>车辆碰撞</li>
@@ -889,7 +889,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 </ul>
 <p>很花钱</p>
 <p>Data可以可视化成一些曲线</p>
-<p><img src="/2023/10/31/Animation_Math/Untitled%205.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%205.png"></p>
+<p><img src="/2023/10/31/Animation_Math/Untitled%205.png" alt="Animation_Math/Untitled%205.png"></p>
 <p>Challenges of Facial Animation</p>
 <ul>
 <li>Uncanny valley<ul>
@@ -900,7 +900,7 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
 </ul>
 <p>Facial Motion Capture </p>
 <p>Example：阿凡达</p>
-<h1 id="动画的制作流程-The-Production-Pipeline"><a href="#动画的制作流程-The-Production-Pipeline" class="headerlink" title="动画的制作流程 The Production Pipeline"></a>动画的制作流程 The Production Pipeline</h1><p><img src="/2023/10/31/Animation_Math/Untitled%206.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%206.png"></p>
+<h1 id="动画的制作流程-The-Production-Pipeline"><a href="#动画的制作流程-The-Production-Pipeline" class="headerlink" title="动画的制作流程 The Production Pipeline"></a>动画的制作流程 The Production Pipeline</h1><p><img src="/2023/10/31/Animation_Math/Untitled%206.png" alt="Animation_Math/Untitled%206.png"></p>
 ]]></content>
       <categories>
         <category>图形学</category>
