@@ -537,258 +537,6 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
       </tags>
   </entry>
   <entry>
-    <title>机器学习基础(二)</title>
-    <url>/2022/03/07/ML2/</url>
-    <content><![CDATA[<h2 id="RoadMap"><a href="#RoadMap" class="headerlink" title="RoadMap"></a><strong>RoadMap</strong></h2><ul>
-<li><a href="#逻辑斯蒂回归">逻辑斯蒂回归</a></li>
-<li><a href="#支持向量机">支持向量机</a></li>
-<li><a href="#决策树">决策树</a></li>
-<li><a href="#adaboost-算法">AdaBoost 算法</a><ul>
-<li><a href="#梯度提升决策树-gbdt">梯度提升决策树 GBDT</a></li>
-</ul>
-</li>
-<li><a href="#机器学习实践">机器学习实践</a></li>
-</ul>
-<h2 id="Index"><a href="#Index" class="headerlink" title="Index"></a><strong>Index</strong></h2><!-- TOC -->
-<ul>
-<li><a href="#符号说明">符号说明</a></li>
-<li><a href="#信息论">信息论</a></li>
-<li><a href="#逻辑斯蒂回归">逻辑斯蒂回归</a><ul>
-<li><a href="#逻辑斯蒂回归模型定义">逻辑斯蒂回归模型定义</a></li>
-<li><a href="#逻辑斯蒂回归推导">逻辑斯蒂回归推导</a></li>
-<li><a href="#多分类逻辑斯蒂回归模型-todo">多分类逻辑斯蒂回归模型 TODO</a></li>
-</ul>
-</li>
-<li><a href="#支持向量机">支持向量机</a><ul>
-<li><a href="#支持向量机简述">支持向量机简述</a><ul>
-<li><a href="#什么是支持向量">什么是支持向量</a></li>
-<li><a href="#支持向量机的分类">支持向量机的分类</a></li>
-<li><a href="#核函数与核技巧">核函数与核技巧</a></li>
-<li><a href="#最大间隔超平面背后的原理">最大间隔超平面背后的原理</a></li>
-</ul>
-</li>
-<li><a href="#支持向量机推导">支持向量机推导</a><ul>
-<li><a href="#线性可分支持向量机推导">线性可分支持向量机推导</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#决策树">决策树</a><ul>
-<li><a href="#信息增益与信息增益比-todo">信息增益与信息增益比 TODO</a></li>
-<li><a href="#分类树---id3-决策树与-c45-决策树-todo">分类树 - ID3 决策树与 C4.5 决策树 TODO</a></li>
-<li><a href="#决策树如何避免过拟合-todo">决策树如何避免过拟合 TODO</a></li>
-<li><a href="#回归树---cart-决策树">回归树 - CART 决策树</a><ul>
-<li><a href="#cart-回归树算法推导">CART 回归树算法推导</a></li>
-<li><a href="#示例-选择切分变量与切分点">示例: 选择切分变量与切分点</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#集成学习">集成学习</a><ul>
-<li><a href="#集成学习的基本策略3">集成学习的基本策略(3)</a><ul>
-<li><a href="#1-boosting">1. Boosting</a><ul>
-<li><a href="#boosting-策略要解决的两个基本问题">Boosting 策略要解决的两个基本问题</a></li>
-</ul>
-</li>
-<li><a href="#2-bagging">2. Bagging</a></li>
-<li><a href="#3-stacking">3. Stacking</a></li>
-</ul>
-</li>
-<li><a href="#adaboost-算法">AdaBoost 算法</a><ul>
-<li><a href="#adaboost-算法描述">AdaBoost 算法描述</a></li>
-<li><a href="#adaboost-算法要点说明">AdaBoost 算法要点说明</a></li>
-</ul>
-</li>
-<li><a href="#前向分步算法">前向分步算法</a><ul>
-<li><a href="#加法模型">加法模型</a></li>
-<li><a href="#前向分步算法描述">前向分步算法描述</a></li>
-<li><a href="#前向分步算法与-adaboost">前向分步算法与 AdaBoost</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#梯度提升决策树-gbdt">梯度提升决策树 GBDT</a><ul>
-<li><a href="#提升树-boosting-tree">提升树 Boosting Tree</a><ul>
-<li><a href="#提升树算法描述">提升树算法描述</a></li>
-</ul>
-</li>
-<li><a href="#梯度提升gb算法">梯度提升(GB)算法</a></li>
-<li><a href="#gbdt-算法描述">GBDT 算法描述</a></li>
-<li><a href="#xgboost-算法">XGBoost 算法</a><ul>
-<li><a href="#xgboost-与-gb-的主要区别">XGBoost 与 GB 的主要区别</a></li>
-<li><a href="#xgboost-的一些内部优化">XGBoost 的一些内部优化</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#随机森林">随机森林</a></li>
-<li><a href="#机器学习实践">机器学习实践</a><ul>
-<li><a href="#boxmuller-变换">Box–Muller 变换</a></li>
-</ul>
-</li>
-<li><a href="#降维">降维</a><ul>
-<li><a href="#svd">SVD</a></li>
-<li><a href="#pca">PCA</a></li>
-<li><a href="#t-sne">t-SNE</a></li>
-<li><a href="#reference">Reference</a></li>
-</ul>
-</li>
-</ul>
-<!-- /TOC -->
-<!-- # 什么是推导
-- 给出一个问题或模型的定义，然后求其最优解的过程 -->
-<h1 id="符号说明"><a href="#符号说明" class="headerlink" title="符号说明"></a>符号说明</h1><ul>
-<li>基本遵从《统计学习方法》一书中的符号表示。</li>
-<li><p>除特别说明，默认$w$为行向量，$x$为列向量，以避免在$wx$中使用转置符号；但有些公式为了更清晰区分向量与标量，依然会使用$^T$的上标，注意区分。</p>
-<p>  输入实例<code>x</code>的特征向量记为：</p>
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=x=(x^{(1)},x^{(2)},\cdots,x^{(n)})^T"><img src="/2022/03/07/ML2/公式_20180713114026.png" height></a></div>
-
-<p>  注意：$x_i$ 和 $x^{(i)}$ 含义不同，前者表示训练集中第 i 个实例，后者表示特征向量中的第 i 个分量；因此，通常记训练集为：</p>
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=T=\left&space;\{&space;(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)&space;\right&space;\}"><img src="/2022/03/07/ML2/公式_20180713132400.png" height></a></div>
-
-<blockquote>
-<p>特征向量用小$n$表示维数，训练集用大$N$表示个数</p>
-</blockquote>
-</li>
-<li><p><strong>公式说明</strong></p>
-<p>  所有公式都可以<strong>点击</strong>跳转至编辑页面，但是部分公式符号会与超链接中的转义冲突；如果编辑页面的公式与本页面中的不同，可以打开源文件，通过原链接打开。</p>
-</li>
-</ul>
-<h1 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h1><blockquote>
-<p>《深度学习》 3.13 信息论</p>
-<ul>
-<li>信息论的基本想法是：一件不太可能的事发生，要比一件非常可能的事发生，提供更多的信息。</li>
-<li>该想法可描述为以下性质：<ol>
-<li>非常可能发生的事件信息量要比较少，并且极端情况下，一定能够发生的事件应该没有信息量。</li>
-<li>比较不可能发生的事件具有更大的信息量。</li>
-<li>独立事件应具有增量的信息。例如，投掷的硬币两次正面朝上传递的信息量，应该是投掷一次硬币正面朝上的信息量的两倍。</li>
-</ol>
-</li>
-</ul>
-</blockquote>
-<h3>信息熵 与 自信息</h3>
-
-<ul>
-<li><p><strong>自信息</strong>（self-information）是一种量化以上性质的函数，定义一个事件<code>x</code>的自信息为：</p>
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=I(x)=-\log&space;P(x)"><img src="/2022/03/07/ML2/公式_20180610215339.png" height></a></div>
-
-<blockquote>
-<p>当该对数的底数为自然对数 e 时，单位为奈特（nats）；当以 2 为底数时，单位为比特（bit）或香农（shannons）</p>
-</blockquote>
-</li>
-<li><p>自信息只处理单个的输出。</p>
-</li>
-<li><p><strong>信息熵</strong>（Information-entropy）用于对整个概率分布中的<strong>不确定性总量</strong>进行量化：</p>
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=H(\mathrm{X})=\mathbb{E}_{\mathrm{X}&space;\sim&space;P}[I(x)]=-\sum_{x&space;\in&space;\mathrm{X}}P(x)\log&space;P(x)"><img src="/2022/03/07/ML2/公式_20180610215417.png" height></a></div>
-
-<blockquote>
-<p>信息论中，记 <code>0log0 = 0</code></p>
-</blockquote>
-</li>
-</ul>
-<h3>交叉熵 与 相对熵/KL散度</h3>
-
-<ul>
-<li><p>定义 <strong>P 对 Q</strong> 的 <strong>KL 散度</strong>（Kullback-Leibler divergence）：</p>
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=D_P(Q)=\mathbb{E}_{\mathrm{X}\sim&space;P}\left&space;[&space;\log&space;\frac{P(x)}{Q(x)}&space;\right&space;]=\sum_{x&space;\in&space;\mathrm{X}}P(x)\left&space;[&space;\log&space;P(x)-\log&space;Q(x)&space;\right&space;]"><img src="/2022/03/07/ML2/公式_20180610215445.png" height></a></div>
-
-</li>
-</ul>
-<p><strong>KL 散度在信息论中度量的是哪个直观量？</strong></p>
-<ul>
-<li>在离散型变量的情况下， KL 散度衡量的是：当我们使用一种被设计成能够使得概率分布 Q 产生的消息的长度最小的编码，发送包含由概率分布 P 产生的符号的消息时，所需要的额外信息量。</li>
-</ul>
-<p><strong>KL散度的性质</strong>：</p>
-<ul>
-<li>非负；KL 散度为 0 当且仅当P 和 Q 在离散型变量的情况下是相同的分布，或者在连续型变量的情况下是“几乎处处”相同的</li>
-<li>不对称；D_p(q) != D_q(p)</li>
-</ul>
-<p><strong>交叉熵</strong>（cross-entropy）：</p>
-<div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=H_P(Q)=-\mathbb{E}_{\mathrm{X}\sim&space;P}\log&space;Q(x)=-\sum_{x&space;\in&space;\mathrm{X}}P(x)\log&space;Q(x)"><img src="/2022/03/07/ML2/公式_20180610215522.png" height></a></div>
-
-<blockquote>
-<p><a href="https://blog.csdn.net/haolexiao/article/details/70142571">信息量，信息熵，交叉熵，KL散度和互信息（信息增益）</a> - CSDN博客</p>
-</blockquote>
-<p><strong>交叉熵 与 KL 散度的关系</strong></p>
-<ul>
-<li><p><strong>针对 Q 最小化交叉熵等价于最小化 P 对 Q 的 KL 散度</strong>，因为 Q 并不参与被省略的那一项。</p>
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=H_P(Q)=H(P)&plus;D_P(Q)"><img src="/2022/03/07/ML2/公式_20180610215554.png" height></a></div>
-</li>
-<li><p>最大似然估计中，最小化 KL 散度其实就是在最小化分布之间的交叉熵。</p>
-<blockquote>
-<p>《深度学习》 ch5.5 - 最大似然估计</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="逻辑斯蒂回归"><a href="#逻辑斯蒂回归" class="headerlink" title="逻辑斯蒂回归"></a>逻辑斯蒂回归</h1><h2 id="逻辑斯蒂回归模型定义"><a href="#逻辑斯蒂回归模型定义" class="headerlink" title="逻辑斯蒂回归模型定义"></a>逻辑斯蒂回归模型定义</h2><!-- TODO: 符号修改，匹配神经网络中的符号表示 -->
-<ul>
-<li><p><strong>二项</strong>逻辑斯蒂回归模型即如下的<strong>条件概率分布</strong></p>
-<!-- [![](ML2/公式_20180709113033.png)](http://www.codecogs.com/eqnedit.php?latex=P(Y=1|x)=\frac{\exp(z)}{1&plus;\exp(z)}=\frac{1}{1&plus;\exp(-z)}) -->
-<p><a href="http://www.codecogs.com/eqnedit.php?latex=P(Y=1|x"><img src="/2022/03/07/ML2/公式_20180709152707.png" alt></a>=\frac{\exp(wx)}{1&plus;\exp(wx)}=\frac{1}{1&plus;\exp(-wx)})</p>
-<p><a href="http://www.codecogs.com/eqnedit.php?latex=P(Y=0|x"><img src="/2022/03/07/ML2/公式_20180709113237.png" alt></a>=1-P(Y=1|x))</p>
-<blockquote>
-<p>简洁起见，省略了偏置 $b$；也可以看做将偏置扩充到了权重中</p>
-</blockquote>
-<p><strong>其中</strong> </p>
-<!-- [![](ML2/公式_20180709113352.png)](http://www.codecogs.com/eqnedit.php?latex=P(Y=0|x)=1-P(Y=1|x)) -->
-<p><a href="http://www.codecogs.com/eqnedit.php?latex=x\in&space;\mathbf{R}^n,Y\in&space;\left&space;\{&space;0,1&space;\right&space;\}"><img src="/2022/03/07/ML2/公式_20180709113801.png" alt></a></p>
-</li>
-<li><p>通常会将以上两个分布记作：</p>
-<p><a href="http://www.codecogs.com/eqnedit.php?latex=\begin{aligned}&space;&amp;P(Y=1|x"><img src="/2022/03/07/ML2/公式_20180709153307.png" alt></a>={\color{Blue}&space;\sigma(x)}\&space;&amp;P(Y=0|x)={\color{Blue}&space;1-\sigma(x)}&space;\end{aligned})</p>
-</li>
-</ul>
-<blockquote>
-<p>《统计学习方法》 6.1 逻辑斯蒂回归模型</p>
-<blockquote>
-<p>原书中记作 $π(x)$ 和 $1-π(x)$，这里为了跟神经网络中统一，使用 $σ$</p>
-</blockquote>
-</blockquote>
-<h2 id="逻辑斯蒂回归推导"><a href="#逻辑斯蒂回归推导" class="headerlink" title="逻辑斯蒂回归推导"></a>逻辑斯蒂回归推导</h2><blockquote>
-<p><a href="https://www.cnblogs.com/daguankele/p/6549891.html">逻辑回归推导</a> - 罐装可乐 - 博客园 </p>
-<ul>
-<li>推导的关键点 (3)<ol>
-<li>逻辑斯蒂回归的定义</li>
-<li>损失函数（极大似然）</li>
-<li>参数优化（梯度下降）</li>
-</ol>
-</li>
-</ul>
-</blockquote>
-<ul>
-<li>给定训练集 $T={(x1,y1),..,(xN,yN)}$，其中 $x ∈ R^n, y ∈ {0, 1}$</li>
-</ul>
-<ol>
-<li><p><strong>逻辑斯蒂回归</strong>的定义：</p>
-<p> <a href="http://www.codecogs.com/eqnedit.php?latex=\begin{aligned}&space;&amp;P(Y=1|x"><img src="/2022/03/07/ML2/公式_20180709161030.png" alt></a>={\color{Blue}&space;\sigma(x)}\&space;&amp;P(Y=0|x)={\color{Blue}&space;1-\sigma(x)}&space;\end{aligned})</p>
-</li>
-<li><p><strong>负对数函数</strong>作为损失函数：</p>
-<p> [<img src="/2022/03/07/ML2/公式_20180713114855.png" alt>]</p>
-<p> 进一步代入 $σ(x)$ 有：</p>
-<p> <a href="http://www.codecogs.com/eqnedit.php?latex=\begin{aligned}&space;L(w"><img src="/2022/03/07/ML2/公式_20180713131851.png" alt></a>&amp;=-\sum_{i=1}^N&space;\left&space;[&space;{\color{Blue}&space;y_i}(w{\color{Red}&space;x_i})-\log(1&plus;\exp(w{\color{Red}&space;x_i}))&space;\right&space;]&space;\end{aligned})</p>
-</li>
-<li><p><strong>求梯度</strong></p>
-<p> <a href="http://www.codecogs.com/eqnedit.php?latex=\begin{aligned}&space;\frac{\partial&space;L(w"><img src="/2022/03/07/ML2/公式_20180713132107.png" alt></a>}{\partial&space;w}&amp;=-\sum<em>{i=1}^N&space;\left&space;[&space;y_ix_i-\frac{\exp(wx_i)}{1&plus;\exp(wx_i)}x_i&space;\right&space;]\&space;&amp;=\sum</em>{i=1}^N&space;[\sigma&space;(x_i)-y_i]x_i&space;\end{aligned})</p>
-</li>
-<li>使用<strong>梯度下降法</strong>求解参数<blockquote>
-<p>深度学习/<a href="../深度学习/README.md#梯度下降法">梯度下降法</a></p>
-</blockquote>
-</li>
-</ol>
-<h2 id="多分类逻辑斯蒂回归模型-TODO"><a href="#多分类逻辑斯蒂回归模型-TODO" class="headerlink" title="多分类逻辑斯蒂回归模型 TODO"></a>多分类逻辑斯蒂回归模型 TODO</h2><ul>
-<li><p>设 $Y ∈ {1,2,..K}$，则多项式逻辑斯蒂回归模型为：</p>
-<p>  <a href="http://www.codecogs.com/eqnedit.php?latex=\begin{aligned}&space;P(Y=k|x"><img src="/2022/03/07/ML2/公式_20180709162840.png" alt></a>&amp;=\frac{\exp(w<em>kx)}{1&plus;\sum</em>{k=1}^{K-1}&space;\exp(w<em>kx)}&space;\quad&space;k=1,2,..,K-1&space;\&space;P(Y=K|x)&amp;=\frac{1}{1&plus;\sum</em>{k=1}^{K-1}\exp(w_kx)}&space;\end{aligned})</p>
-</li>
-<li>类似 $Softmax$</li>
-</ul>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>基础</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ray：Data</title>
     <url>/2022/04/07/ray_data/</url>
     <content><![CDATA[<h1 id="Ray数据集-分布式数据加载和计算"><a href="#Ray数据集-分布式数据加载和计算" class="headerlink" title="Ray数据集:分布式数据加载和计算"></a>Ray数据集:分布式数据加载和计算</h1><p>Ray数据集是在Ray库和应用程序中加载和交换数据的标准方式。它们提供基本的分布式数据转换，如<code>映射</code>、<code>过滤</code>和<code>重分区</code>，并与各种文件格式、数据源和分布式框架兼容。</p>
@@ -902,6 +650,263 @@ L(\phi_2, {\mathcal D}) = \mathop{E}\limits_{(s,a,r,s',d) \sim {\mathcal D}}{\Bi
       </categories>
       <tags>
         <tag>深度学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Animation：Math</title>
+    <url>/2023/10/31/Animation_Math/</url>
+    <content><![CDATA[<h1 id="Lec-21-Animation"><a href="#Lec-21-Animation" class="headerlink" title="Lec 21 - Animation"></a>Lec 21 - Animation</h1><ul>
+<li>动画是一种信息传递的工具<ul>
+<li>美学经常比技术重要</li>
+</ul>
+</li>
+<li>是模型的延伸→连续性<ul>
+<li>Represent scene models as a function of time</li>
+</ul>
+</li>
+<li>输出：sequence of images that when viewed sequentially provide a sense of motion<ul>
+<li>电影：24FPS</li>
+<li>视频：30FPS、29.994FPS</li>
+<li>VR：90FPS （不晕的基础要求）</li>
+</ul>
+</li>
+</ul>
+<h1 id="History"><a href="#History" class="headerlink" title="History"></a>History</h1><p>最早：狩猎鹿的动画(Shahr-e Sukhteh, Iran 3200 BCE)</p>
+<p>圆盘旋转：(Phenakistoscope, 1831)</p>
+<p>第一部Film：Edward Muybridge, “Sallie Gardner” (1878)</p>
+<p>First Hand-Drawn Feature-Length (&gt;40 mins) Animation：Disney, “Snow White and the Seven Dwarfs” (1937)</p>
+<p>First Digital-Computer-Generated Animation：Ivan Sutherland, “Sketchpad” (1963) – Light pen, vector display</p>
+<p>Early Computer Animation：Ed Catmull &amp; Frederick Parke, “Computer Animated Faces” (1972)</p>
+<p>Digital Dinosaurs!：Jurassic Park (1993)</p>
+<p>First CG Feature-Length Film：Pixar, “Toy Story” (1995) （光栅化）</p>
+<p>Computer Animation - 10 years ago：Sony Pictures Animation, “Cloudy With a Chance of Meatballs” (2009)</p>
+<p>Computer Animation - last year：Walt Disney Animation Studios, “Frozen 2” (2019)</p>
+<h1 id="Keyframe-animation关键帧动画"><a href="#Keyframe-animation关键帧动画" class="headerlink" title="Keyframe animation关键帧动画"></a>Keyframe animation关键帧动画</h1><ul>
+<li>Animator (e.g. lead animator) creates keyframes 关键帧</li>
+<li>Assistant (person or computer) creates in-between frames (“tweening”) 渐变帧</li>
+</ul>
+<h2 id="关键的技术难点-Interpolation-插值"><a href="#关键的技术难点-Interpolation-插值" class="headerlink" title="关键的技术难点 - Interpolation 插值"></a>关键的技术难点 - Interpolation 插值</h2><ul>
+<li>Linear interpolation usually not good enough</li>
+<li>Recall splines for smooth / controllable interpolation</li>
+</ul>
+<p>B样条……</p>
+<h1 id="Physical-Simulation物理模拟"><a href="#Physical-Simulation物理模拟" class="headerlink" title="Physical Simulation物理模拟"></a>Physical Simulation物理模拟</h1><p>模拟、仿真：推导、实现公式，模拟出物体应该怎么变化</p>
+<p>例子：布料模拟、流体模拟</p>
+<h2 id="质点弹簧系统-Mass-Spring-System-Example-of-Modeling-a-Dynamic-System"><a href="#质点弹簧系统-Mass-Spring-System-Example-of-Modeling-a-Dynamic-System" class="headerlink" title="质点弹簧系统 Mass Spring System: Example of Modeling a Dynamic System"></a>质点弹簧系统 Mass Spring System: Example of Modeling a Dynamic System</h2><p>Example: Mass Spring Rope, Hair, Mass Spring Mesh</p>
+<ul>
+<li>A Simple Idealized Spring<ul>
+<li>没有初始长度</li>
+<li>随着拉力线性增长/缩短，线性系数是spring coefficient: stiffness</li>
+<li>Force pulls points together</li>
+<li>Strength proportional to displacement (Hooke’s Law)</li>
+<li>问题：长度会倾向于0</li>
+</ul>
+</li>
+<li><p>Non-Zero Length Spring</p>
+<ul>
+<li>初始长度Rest length不为零</li>
+<li><p>Problem: oscillates forever 永远震荡</p>
+<script type="math/tex; mode=display">
+\boldsymbol{f}_{a \rightarrow b}=k_{s} \frac{\boldsymbol{b}-\boldsymbol{a}}{\|\boldsymbol{b}-\boldsymbol{a}\|}(\|\boldsymbol{b}-\boldsymbol{a}\|-l)</script></li>
+</ul>
+</li>
+</ul>
+<p>Dot Notation for Derivatives：</p>
+<script type="math/tex; mode=display">
+\begin{aligned} &\boldsymbol{x}\\ &\dot{\boldsymbol{x}}=\boldsymbol{v}\\ &\ddot{\boldsymbol{x}}=\boldsymbol{a} \end{aligned}</script><ul>
+<li><p>Introducing Energy Loss</p>
+<ul>
+<li><p>Simple motion damping 阻尼</p>
+<script type="math/tex; mode=display">
+  \boldsymbol{f}=-k_{d} \dot{\boldsymbol{b}}</script></li>
+<li><p>Behaves like viscous drag on</p>
+</li>
+<li>Slows down motion in the direction of velocity</li>
+<li>$k_d$ is a damping coefficient</li>
+<li>问题：Slows down all motion<ul>
+<li>Want a rusty spring’s oscillations to slow down, but should it also fall to the ground more slowly? 跟全局速度挂钩</li>
+<li>无法表示弹簧内部的损耗</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Internal Damping for Spring</p>
+<p>  <img src="/2023/10/31/Animation_Math/Untitled.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled.png"></p>
+<ul>
+<li>Viscous drag only on change in spring length<ul>
+<li>Won’t slow group motion for the spring system (e.g. global translation or rotation of the group)</li>
+</ul>
+</li>
+<li>Note: This is only one specific type of damping 只是一种阻尼的近似</li>
+</ul>
+</li>
+</ul>
+<h2 id="Structures-from-Springs"><a href="#Structures-from-Springs" class="headerlink" title="Structures from Springs"></a>Structures from Springs</h2><ul>
+<li>Sheets</li>
+<li>Blocks</li>
+<li>Others<ul>
+<li>比如说，一块布的进化</li>
+</ul>
+</li>
+</ul>
+<p>Step 1: Sheets</p>
+<ul>
+<li>This structure will not resist shearing切变会露馅</li>
+<li>This structure will not resist out-of-plane bending…</li>
+</ul>
+<p><img src="/2023/10/31/Animation_Math/Untitled%201.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%201.png"></p>
+<p>Step 2: 加强筋</p>
+<ul>
+<li>This structure will resist shearing but has anisotropic bias 各向异性</li>
+<li>This structure will not resist out-of-plane bending either…</li>
+</ul>
+<p><img src="/2023/10/31/Animation_Math/Untitled%202.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%202.png"></p>
+<p>Step 3: 加强筋 plus</p>
+<ul>
+<li>This structure will resist shearing. Less directional bias.</li>
+<li>This structure will not resist out-of-plane bending either… 弯折</li>
+</ul>
+<p><img src="/2023/10/31/Animation_Math/Untitled%203.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%203.png"></p>
+<p>Step 4: 加强筋 max （skip connection）</p>
+<ul>
+<li>This structure will resist shearing. Less directional bias.</li>
+<li>This structure will resist out-of-plane bending （Red springs should be much weaker）</li>
+</ul>
+<p><img src="/2023/10/31/Animation_Math/Untitled%204.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%204.png"></p>
+<h2 id="FEM-Finite-Element-Method-Instead-of-Springs"><a href="#FEM-Finite-Element-Method-Instead-of-Springs" class="headerlink" title="FEM (Finite Element Method) Instead of Springs"></a>FEM (Finite Element Method) Instead of Springs</h2><p>有限元方法</p>
+<ul>
+<li>车辆碰撞</li>
+</ul>
+<p>力传导扩散适合用有限元方法建模做</p>
+<h1 id="动画系统之Particle-Systems粒子系统"><a href="#动画系统之Particle-Systems粒子系统" class="headerlink" title="动画系统之Particle Systems粒子系统"></a>动画系统之Particle Systems粒子系统</h1><ul>
+<li>建模定义很多粒子</li>
+<li>每个粒子有自己的属性</li>
+</ul>
+<p>Model dynamical systems as collections of large numbers of particles </p>
+<p>Each particle’s motion is defined by a set of physical (or non-physical) forces </p>
+<p>Popular technique in graphics and games</p>
+<p>• Easy to understand, implement</p>
+<p>• Scalable: fewer particles for speed, more for higher complexity</p>
+<p>Challenges</p>
+<p>• May need many particles (e.g. fluids)</p>
+<p>• May need acceleration structures (e.g. to find nearest particles for interactions)</p>
+<p>For each frame in animation</p>
+<p>• [If needed] Remove dead particles</p>
+<p>• Calculate forces on each particle</p>
+<p>• Update each particle’s position and velocity</p>
+<p>• [If needed] Create new particles</p>
+<p>• Render particles</p>
+<p>定义个体和群体之间的关系</p>
+<h3 id="Particle-System-Forces"><a href="#Particle-System-Forces" class="headerlink" title="Particle System Forces"></a>Particle System Forces</h3><p>Attraction and repulsion forces</p>
+<p>• Gravity, electromagnetism, …</p>
+<p>• Springs, propulsion, … </p>
+<p>Damping forces</p>
+<p>• Friction, air drag, viscosity, … </p>
+<p>Collisions</p>
+<p>• Walls, containers, fixed objects, …</p>
+<p>• Dynamic objects, character body parts, …</p>
+<p>星系模拟、Particle-Based Fluids</p>
+<p>Example: Simulated Flocking as an ODE</p>
+<ul>
+<li>定义鸟儿之间交互的规则：个体对群体的观察</li>
+<li>Model each bird as a particle Subject to very simple forces:</li>
+<li>attraction to center of neighbors</li>
+<li>repulsion from individual neighbors</li>
+<li>alignment toward average trajectory of neighbors Simulate evolution of large particle system numerically Emergent complex behavior (also seen in fish, bees, …)</li>
+</ul>
+<p>Example: Molecular Dynamics</p>
+<p>Example: Crowds + “Rock” Dynamics</p>
+<h1 id="Kinematics"><a href="#Kinematics" class="headerlink" title="Kinematics"></a>Kinematics</h1><p>运动学：正向和反向</p>
+<h2 id="Forward-Kinematics-正向运动学"><a href="#Forward-Kinematics-正向运动学" class="headerlink" title="Forward Kinematics 正向运动学"></a>Forward Kinematics 正向运动学</h2><p>明确骨骼之间的运动关系→计算出各个部位的位置</p>
+<p>Articulated skeleton</p>
+<ul>
+<li>Topology (what’s connected to what)</li>
+<li>Geometric relations from joints</li>
+<li>Tree structure (in absence of loops)</li>
+</ul>
+<p>Joint types</p>
+<ul>
+<li>Pin (1D rotation)</li>
+<li>Ball (2D rotation)</li>
+<li>Prismatic joint (translation)</li>
+</ul>
+<p>Strengths</p>
+<ul>
+<li>Direct control is convenient 无法直接控制</li>
+<li>Implementation is straightforward</li>
+</ul>
+<p>Weaknesses</p>
+<ul>
+<li>Animation may be inconsistent with physics</li>
+<li>Time consuming for artists</li>
+</ul>
+<h2 id="Inverse-Kinematics-逆运动学"><a href="#Inverse-Kinematics-逆运动学" class="headerlink" title="Inverse Kinematics 逆运动学"></a>Inverse Kinematics 逆运动学</h2><p>限制各个部位（通常只有终端）的位置、限制骨骼的运动方式→计算骨骼的运动</p>
+<p>方便控制形体整体形状</p>
+<p>解特别复杂，可能并不唯一</p>
+<p>解法：随机化算法（优化方法，梯度下降）</p>
+<p>Numerical solution to general N-link IK problem</p>
+<p>• Choose an initial configuration</p>
+<p>• Define an error metric (e.g. square of distance between goal and current position)</p>
+<p>• Compute gradient of error as function of configuration</p>
+<p>• Apply gradient descent (or Newton’s method, or other optimization procedure)</p>
+<p>例子：Style-Based IK</p>
+<h1 id="Rigging"><a href="#Rigging" class="headerlink" title="Rigging"></a>Rigging</h1><p>对形体的控制，像木偶一样</p>
+<p>Rigging is a set of higher level controls on a character that allow more rapid &amp; intuitive modification of pose, deformations, expression, etc.</p>
+<p>Important</p>
+<p>• Like strings on a puppet</p>
+<p>• Captures all meaningful character changes</p>
+<p>• Varies from character to character </p>
+<p>Expensive to create</p>
+<p>• Manual effort 定控制点，拉控制点（应该怎么定、应该怎么拉 → 动画师）</p>
+<p>• Requires both artistic and technical training</p>
+<h2 id="Blend-Shapes-控制点间的位置插值计算"><a href="#Blend-Shapes-控制点间的位置插值计算" class="headerlink" title="Blend Shapes 控制点间的位置插值计算"></a>Blend Shapes 控制点间的位置插值计算</h2><p>Instead of skeleton, interpolate directly between surfaces</p>
+<p>E.g., model a collection of facial expressions:</p>
+<p>Simplest scheme: take linear combination of vertex positions</p>
+<p>Spline used to control choice of weights over time</p>
+<h1 id="Motion-Capture"><a href="#Motion-Capture" class="headerlink" title="Motion Capture"></a>Motion Capture</h1><p>真人控制点反映到虚拟角色中去，需要建立真实和虚拟的联系</p>
+<p>Data-driven approach to creating animation sequences</p>
+<ul>
+<li>Record real-world performances (e.g. person executing an activity)</li>
+<li>Extract pose as a function of time from the data collected</li>
+</ul>
+<p>Strengths</p>
+<p>• Can capture large amounts of real data quickly</p>
+<p>• Realism can be high </p>
+<p>Weaknesses</p>
+<p>• Complex and costly set-ups 复杂、花钱</p>
+<p>• Captured animation may not meet artistic needs, requiring alterations 不符合艺术家要求，不可能实现的动作</p>
+<p>捕捉条件限制</p>
+<p>不同的捕捉方法：</p>
+<ul>
+<li>Optical (More on following slides)<ul>
+<li>Markers on subject</li>
+<li>Positions by triangulation from multiple cameras</li>
+<li>8+ cameras, 240 Hz, occlusions are difficult</li>
+</ul>
+</li>
+<li>Magnetic Sense magnetic fields to infer position / orientation. Tethered.</li>
+<li>Mechanical Measure joint angles directly. Restricts motion.</li>
+</ul>
+<p>很花钱</p>
+<p>Data可以可视化成一些曲线</p>
+<p><img src="/2023/10/31/Animation_Math/Untitled%205.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%205.png"></p>
+<p>Challenges of Facial Animation</p>
+<ul>
+<li>Uncanny valley<ul>
+<li>In robotics and graphics</li>
+<li>As artificial character appearance approaches human realism, our emotional response goes negative, until it achieves a sufficiently convincing level of realism in expression</li>
+</ul>
+</li>
+</ul>
+<p>Facial Motion Capture </p>
+<p>Example：阿凡达</p>
+<h1 id="动画的制作流程-The-Production-Pipeline"><a href="#动画的制作流程-The-Production-Pipeline" class="headerlink" title="动画的制作流程 The Production Pipeline"></a>动画的制作流程 The Production Pipeline</h1><p><img src="/2023/10/31/Animation_Math/Untitled%206.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%206.png"></p>
+]]></content>
+      <categories>
+        <category>图形学</category>
+      </categories>
+      <tags>
+        <tag>动画</tag>
       </tags>
   </entry>
 </search>

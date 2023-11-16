@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Animation：Math - Sunrisulfr的菠萝屋</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Sunrisulfr,"> 
+    <meta name="description" content="Lec 21 - Animation
+动画是一种信息传递的工具
+美学经常比技术重要
+
+
+是模型的延伸→连续性
+Represent scene models as a function of time,"> 
+    <meta name="author" content="Sunrisulfr"> 
+    <link rel="alternative" href="atom.xml" title="Sunrisulfr的菠萝屋" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Sunrisulfr的菠萝屋</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="/"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">Animation：Math</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">Animation：Math</h1>
+        <div class="stuff">
+            <span>十月 31, 2023</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h1 id="Lec-21-Animation"><a href="#Lec-21-Animation" class="headerlink" title="Lec 21 - Animation"></a>Lec 21 - Animation</h1><ul>
+<li>动画是一种信息传递的工具<ul>
+<li>美学经常比技术重要</li>
+</ul>
+</li>
+<li>是模型的延伸→连续性<ul>
+<li>Represent scene models as a function of time</li>
+</ul>
+</li>
+<li>输出：sequence of images that when viewed sequentially provide a sense of motion<ul>
+<li>电影：24FPS</li>
+<li>视频：30FPS、29.994FPS</li>
+<li>VR：90FPS （不晕的基础要求）</li>
+</ul>
+</li>
+</ul>
+<h1 id="History"><a href="#History" class="headerlink" title="History"></a>History</h1><p>最早：狩猎鹿的动画(Shahr-e Sukhteh, Iran 3200 BCE)</p>
+<p>圆盘旋转：(Phenakistoscope, 1831)</p>
+<p>第一部Film：Edward Muybridge, “Sallie Gardner” (1878)</p>
+<p>First Hand-Drawn Feature-Length (&gt;40 mins) Animation：Disney, “Snow White and the Seven Dwarfs” (1937)</p>
+<p>First Digital-Computer-Generated Animation：Ivan Sutherland, “Sketchpad” (1963) – Light pen, vector display</p>
+<p>Early Computer Animation：Ed Catmull &amp; Frederick Parke, “Computer Animated Faces” (1972)</p>
+<p>Digital Dinosaurs!：Jurassic Park (1993)</p>
+<p>First CG Feature-Length Film：Pixar, “Toy Story” (1995) （光栅化）</p>
+<p>Computer Animation - 10 years ago：Sony Pictures Animation, “Cloudy With a Chance of Meatballs” (2009)</p>
+<p>Computer Animation - last year：Walt Disney Animation Studios, “Frozen 2” (2019)</p>
+<h1 id="Keyframe-animation关键帧动画"><a href="#Keyframe-animation关键帧动画" class="headerlink" title="Keyframe animation关键帧动画"></a>Keyframe animation关键帧动画</h1><ul>
+<li>Animator (e.g. lead animator) creates keyframes 关键帧</li>
+<li>Assistant (person or computer) creates in-between frames (“tweening”) 渐变帧</li>
+</ul>
+<h2 id="关键的技术难点-Interpolation-插值"><a href="#关键的技术难点-Interpolation-插值" class="headerlink" title="关键的技术难点 - Interpolation 插值"></a>关键的技术难点 - Interpolation 插值</h2><ul>
+<li>Linear interpolation usually not good enough</li>
+<li>Recall splines for smooth / controllable interpolation</li>
+</ul>
+<p>B样条……</p>
+<h1 id="Physical-Simulation物理模拟"><a href="#Physical-Simulation物理模拟" class="headerlink" title="Physical Simulation物理模拟"></a>Physical Simulation物理模拟</h1><p>模拟、仿真：推导、实现公式，模拟出物体应该怎么变化</p>
+<p>例子：布料模拟、流体模拟</p>
+<h2 id="质点弹簧系统-Mass-Spring-System-Example-of-Modeling-a-Dynamic-System"><a href="#质点弹簧系统-Mass-Spring-System-Example-of-Modeling-a-Dynamic-System" class="headerlink" title="质点弹簧系统 Mass Spring System: Example of Modeling a Dynamic System"></a>质点弹簧系统 Mass Spring System: Example of Modeling a Dynamic System</h2><p>Example: Mass Spring Rope, Hair, Mass Spring Mesh</p>
+<ul>
+<li>A Simple Idealized Spring<ul>
+<li>没有初始长度</li>
+<li>随着拉力线性增长/缩短，线性系数是spring coefficient: stiffness</li>
+<li>Force pulls points together</li>
+<li>Strength proportional to displacement (Hooke’s Law)</li>
+<li>问题：长度会倾向于0</li>
+</ul>
+</li>
+<li><p>Non-Zero Length Spring</p>
+<ul>
+<li>初始长度Rest length不为零</li>
+<li><p>Problem: oscillates forever 永远震荡</p>
+<script type="math/tex; mode=display">
+\boldsymbol{f}_{a \rightarrow b}=k_{s} \frac{\boldsymbol{b}-\boldsymbol{a}}{\|\boldsymbol{b}-\boldsymbol{a}\|}(\|\boldsymbol{b}-\boldsymbol{a}\|-l)</script></li>
+</ul>
+</li>
+</ul>
+<p>Dot Notation for Derivatives：</p>
+<script type="math/tex; mode=display">
+\begin{aligned} &\boldsymbol{x}\\ &\dot{\boldsymbol{x}}=\boldsymbol{v}\\ &\ddot{\boldsymbol{x}}=\boldsymbol{a} \end{aligned}</script><ul>
+<li><p>Introducing Energy Loss</p>
+<ul>
+<li><p>Simple motion damping 阻尼</p>
+<script type="math/tex; mode=display">
+  \boldsymbol{f}=-k_{d} \dot{\boldsymbol{b}}</script></li>
+<li><p>Behaves like viscous drag on</p>
+</li>
+<li>Slows down motion in the direction of velocity</li>
+<li>$k_d$ is a damping coefficient</li>
+<li>问题：Slows down all motion<ul>
+<li>Want a rusty spring’s oscillations to slow down, but should it also fall to the ground more slowly? 跟全局速度挂钩</li>
+<li>无法表示弹簧内部的损耗</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Internal Damping for Spring</p>
+<p>  <img src="/2023/10/31/Animation_Math/Untitled.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled.png"></p>
+<ul>
+<li>Viscous drag only on change in spring length<ul>
+<li>Won’t slow group motion for the spring system (e.g. global translation or rotation of the group)</li>
+</ul>
+</li>
+<li>Note: This is only one specific type of damping 只是一种阻尼的近似</li>
+</ul>
+</li>
+</ul>
+<h2 id="Structures-from-Springs"><a href="#Structures-from-Springs" class="headerlink" title="Structures from Springs"></a>Structures from Springs</h2><ul>
+<li>Sheets</li>
+<li>Blocks</li>
+<li>Others<ul>
+<li>比如说，一块布的进化</li>
+</ul>
+</li>
+</ul>
+<p>Step 1: Sheets</p>
+<ul>
+<li>This structure will not resist shearing切变会露馅</li>
+<li>This structure will not resist out-of-plane bending…</li>
+</ul>
+<p><img src="/2023/10/31/Animation_Math/Untitled%201.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%201.png"></p>
+<p>Step 2: 加强筋</p>
+<ul>
+<li>This structure will resist shearing but has anisotropic bias 各向异性</li>
+<li>This structure will not resist out-of-plane bending either…</li>
+</ul>
+<p><img src="/2023/10/31/Animation_Math/Untitled%202.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%202.png"></p>
+<p>Step 3: 加强筋 plus</p>
+<ul>
+<li>This structure will resist shearing. Less directional bias.</li>
+<li>This structure will not resist out-of-plane bending either… 弯折</li>
+</ul>
+<p><img src="/2023/10/31/Animation_Math/Untitled%203.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%203.png"></p>
+<p>Step 4: 加强筋 max （skip connection）</p>
+<ul>
+<li>This structure will resist shearing. Less directional bias.</li>
+<li>This structure will resist out-of-plane bending （Red springs should be much weaker）</li>
+</ul>
+<p><img src="/2023/10/31/Animation_Math/Untitled%204.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%204.png"></p>
+<h2 id="FEM-Finite-Element-Method-Instead-of-Springs"><a href="#FEM-Finite-Element-Method-Instead-of-Springs" class="headerlink" title="FEM (Finite Element Method) Instead of Springs"></a>FEM (Finite Element Method) Instead of Springs</h2><p>有限元方法</p>
+<ul>
+<li>车辆碰撞</li>
+</ul>
+<p>力传导扩散适合用有限元方法建模做</p>
+<h1 id="动画系统之Particle-Systems粒子系统"><a href="#动画系统之Particle-Systems粒子系统" class="headerlink" title="动画系统之Particle Systems粒子系统"></a>动画系统之Particle Systems粒子系统</h1><ul>
+<li>建模定义很多粒子</li>
+<li>每个粒子有自己的属性</li>
+</ul>
+<p>Model dynamical systems as collections of large numbers of particles </p>
+<p>Each particle’s motion is defined by a set of physical (or non-physical) forces </p>
+<p>Popular technique in graphics and games</p>
+<p>• Easy to understand, implement</p>
+<p>• Scalable: fewer particles for speed, more for higher complexity</p>
+<p>Challenges</p>
+<p>• May need many particles (e.g. fluids)</p>
+<p>• May need acceleration structures (e.g. to find nearest particles for interactions)</p>
+<p>For each frame in animation</p>
+<p>• [If needed] Remove dead particles</p>
+<p>• Calculate forces on each particle</p>
+<p>• Update each particle’s position and velocity</p>
+<p>• [If needed] Create new particles</p>
+<p>• Render particles</p>
+<p>定义个体和群体之间的关系</p>
+<h3 id="Particle-System-Forces"><a href="#Particle-System-Forces" class="headerlink" title="Particle System Forces"></a>Particle System Forces</h3><p>Attraction and repulsion forces</p>
+<p>• Gravity, electromagnetism, …</p>
+<p>• Springs, propulsion, … </p>
+<p>Damping forces</p>
+<p>• Friction, air drag, viscosity, … </p>
+<p>Collisions</p>
+<p>• Walls, containers, fixed objects, …</p>
+<p>• Dynamic objects, character body parts, …</p>
+<p>星系模拟、Particle-Based Fluids</p>
+<p>Example: Simulated Flocking as an ODE</p>
+<ul>
+<li>定义鸟儿之间交互的规则：个体对群体的观察</li>
+<li>Model each bird as a particle Subject to very simple forces:</li>
+<li>attraction to center of neighbors</li>
+<li>repulsion from individual neighbors</li>
+<li>alignment toward average trajectory of neighbors Simulate evolution of large particle system numerically Emergent complex behavior (also seen in fish, bees, …)</li>
+</ul>
+<p>Example: Molecular Dynamics</p>
+<p>Example: Crowds + “Rock” Dynamics</p>
+<h1 id="Kinematics"><a href="#Kinematics" class="headerlink" title="Kinematics"></a>Kinematics</h1><p>运动学：正向和反向</p>
+<h2 id="Forward-Kinematics-正向运动学"><a href="#Forward-Kinematics-正向运动学" class="headerlink" title="Forward Kinematics 正向运动学"></a>Forward Kinematics 正向运动学</h2><p>明确骨骼之间的运动关系→计算出各个部位的位置</p>
+<p>Articulated skeleton</p>
+<ul>
+<li>Topology (what’s connected to what)</li>
+<li>Geometric relations from joints</li>
+<li>Tree structure (in absence of loops)</li>
+</ul>
+<p>Joint types</p>
+<ul>
+<li>Pin (1D rotation)</li>
+<li>Ball (2D rotation)</li>
+<li>Prismatic joint (translation)</li>
+</ul>
+<p>Strengths</p>
+<ul>
+<li>Direct control is convenient 无法直接控制</li>
+<li>Implementation is straightforward</li>
+</ul>
+<p>Weaknesses</p>
+<ul>
+<li>Animation may be inconsistent with physics</li>
+<li>Time consuming for artists</li>
+</ul>
+<h2 id="Inverse-Kinematics-逆运动学"><a href="#Inverse-Kinematics-逆运动学" class="headerlink" title="Inverse Kinematics 逆运动学"></a>Inverse Kinematics 逆运动学</h2><p>限制各个部位（通常只有终端）的位置、限制骨骼的运动方式→计算骨骼的运动</p>
+<p>方便控制形体整体形状</p>
+<p>解特别复杂，可能并不唯一</p>
+<p>解法：随机化算法（优化方法，梯度下降）</p>
+<p>Numerical solution to general N-link IK problem</p>
+<p>• Choose an initial configuration</p>
+<p>• Define an error metric (e.g. square of distance between goal and current position)</p>
+<p>• Compute gradient of error as function of configuration</p>
+<p>• Apply gradient descent (or Newton’s method, or other optimization procedure)</p>
+<p>例子：Style-Based IK</p>
+<h1 id="Rigging"><a href="#Rigging" class="headerlink" title="Rigging"></a>Rigging</h1><p>对形体的控制，像木偶一样</p>
+<p>Rigging is a set of higher level controls on a character that allow more rapid &amp; intuitive modification of pose, deformations, expression, etc.</p>
+<p>Important</p>
+<p>• Like strings on a puppet</p>
+<p>• Captures all meaningful character changes</p>
+<p>• Varies from character to character </p>
+<p>Expensive to create</p>
+<p>• Manual effort 定控制点，拉控制点（应该怎么定、应该怎么拉 → 动画师）</p>
+<p>• Requires both artistic and technical training</p>
+<h2 id="Blend-Shapes-控制点间的位置插值计算"><a href="#Blend-Shapes-控制点间的位置插值计算" class="headerlink" title="Blend Shapes 控制点间的位置插值计算"></a>Blend Shapes 控制点间的位置插值计算</h2><p>Instead of skeleton, interpolate directly between surfaces</p>
+<p>E.g., model a collection of facial expressions:</p>
+<p>Simplest scheme: take linear combination of vertex positions</p>
+<p>Spline used to control choice of weights over time</p>
+<h1 id="Motion-Capture"><a href="#Motion-Capture" class="headerlink" title="Motion Capture"></a>Motion Capture</h1><p>真人控制点反映到虚拟角色中去，需要建立真实和虚拟的联系</p>
+<p>Data-driven approach to creating animation sequences</p>
+<ul>
+<li>Record real-world performances (e.g. person executing an activity)</li>
+<li>Extract pose as a function of time from the data collected</li>
+</ul>
+<p>Strengths</p>
+<p>• Can capture large amounts of real data quickly</p>
+<p>• Realism can be high </p>
+<p>Weaknesses</p>
+<p>• Complex and costly set-ups 复杂、花钱</p>
+<p>• Captured animation may not meet artistic needs, requiring alterations 不符合艺术家要求，不可能实现的动作</p>
+<p>捕捉条件限制</p>
+<p>不同的捕捉方法：</p>
+<ul>
+<li>Optical (More on following slides)<ul>
+<li>Markers on subject</li>
+<li>Positions by triangulation from multiple cameras</li>
+<li>8+ cameras, 240 Hz, occlusions are difficult</li>
+</ul>
+</li>
+<li>Magnetic Sense magnetic fields to infer position / orientation. Tethered.</li>
+<li>Mechanical Measure joint angles directly. Restricts motion.</li>
+</ul>
+<p>很花钱</p>
+<p>Data可以可视化成一些曲线</p>
+<p><img src="/2023/10/31/Animation_Math/Untitled%205.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%205.png"></p>
+<p>Challenges of Facial Animation</p>
+<ul>
+<li>Uncanny valley<ul>
+<li>In robotics and graphics</li>
+<li>As artificial character appearance approaches human realism, our emotional response goes negative, until it achieves a sufficiently convincing level of realism in expression</li>
+</ul>
+</li>
+</ul>
+<p>Facial Motion Capture </p>
+<p>Example：阿凡达</p>
+<h1 id="动画的制作流程-The-Production-Pipeline"><a href="#动画的制作流程-The-Production-Pipeline" class="headerlink" title="动画的制作流程 The Production Pipeline"></a>动画的制作流程 The Production Pipeline</h1><p><img src="/2023/10/31/Animation_Math/Untitled%206.png" alt="Lec%2021%20-%20Animation%20a4054be91757401e965ed137cdfe7285/Untitled%206.png"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='f16f580b288c93fceb5d'
+        data-cs='b844e802d1894562ccabe326fcf989821a9a0915'
+        data-r='blogissue'
+        data-o='sunrisulfr'
+        data-a='sunrisulfr'
+        data-d='true'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+</html>
